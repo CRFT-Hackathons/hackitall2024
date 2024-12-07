@@ -1,13 +1,9 @@
 import * as t from "drizzle-orm/pg-core";
 
-export const userTypes = t.pgEnum("user_types", [
-  "voluntar",
-  "organizatie",
-  "user",
-]);
+const userTypes = t.pgEnum("user_types", ["voluntar", "organizatie", "user"]);
 
 export const users = t.pgTable("users", {
-  id: t.integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: t.varchar({ length: 1024 }).primaryKey(),
   first_name: t.varchar({ length: 128 }).notNull(),
   last_name: t.varchar({ length: 128 }).notNull(),
   email: t.varchar({ length: 320 }).notNull().unique(),
