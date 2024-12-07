@@ -32,4 +32,5 @@ export const posts = table("posts", {
   registration_end: t.timestamp({ withTimezone: true }).notNull(),
   is_open: t.boolean().notNull().default(true),
   required_people: t.integer().notNull(),
+  media_url: t.varchar({ length: 1024 }).notNull(),
 });
