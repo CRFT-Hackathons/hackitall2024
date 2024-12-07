@@ -29,7 +29,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <nav className="w-full bg-background border-b border-border fixed">
+    <nav className="w-full bg-white dark:bg-background border-b border-border fixed z-20">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
