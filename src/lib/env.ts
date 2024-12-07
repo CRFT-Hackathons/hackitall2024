@@ -20,8 +20,20 @@ export const dbEnv = createEnv({
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });
 
+export const googleEnv = createEnv({
+  extends: [sharedEnv],
+  server: {
+    GOOGLE_API_KEY: z.string().optional(),
+    GOOGLE_PROJECT_ID: z.string().optional(),
+    GOOGLE_ACCESS_TOKEN: z.string().optional(),
+  },
+  experimental__runtimeEnv: {},
+  emptyStringAsUndefined: true,
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
+});
+
 export const env = createEnv({
-  extends: [sharedEnv, dbEnv],
+  extends: [sharedEnv, dbEnv, googleEnv],
   shared: {
     PORT: z.coerce.number().default(3000),
   },

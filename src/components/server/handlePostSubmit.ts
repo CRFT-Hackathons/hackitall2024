@@ -4,6 +4,7 @@ import { db } from "~/lib/db";
 import { posts } from "~/lib/schema/post";
 import { analyzeInputAnnotate } from "~/lib/helpers/textLanguage";
 import { useClerk } from "@clerk/nextjs";
+import { matchCategory } from "~/lib/category";
 
 export async function handlePostSubmit({
   userID,
@@ -50,11 +51,12 @@ export async function handlePostSubmit({
         error: "Your description or title contains inappropriate language.",
       };
     } else {
+      const categoryLocal = await matchCategory(title, description);
       await db.insert(posts).values({
         owner_id: userID,
         title,
         description,
-        category: "housing_support",
+        category: categoryLocal,
         is_open: true,
         registration_start: registrationStartDate,
         registration_end: registrationEndDate,
