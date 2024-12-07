@@ -11,7 +11,7 @@ export const accessToInfos = table(
       .notNull()
       .references(() => posts.id), // Foreign key to `posts.id`
     volunteer_id: t
-      .integer()
+      .varchar({ length: 256 })
       .notNull()
       .references(() => users.id), // Foreign key to `users.id`
   },

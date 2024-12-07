@@ -8,7 +8,7 @@ export const messages = table("messages", {
   content: t.varchar({ length: 1024 }).notNull(), // Message content (increase size if needed)
   sendAt: t.timestamp({ withTimezone: true }).defaultNow().notNull(), // Timestamp when the message was sent
   sender_id: t
-    .integer()
+    .varchar({ length: 256 })
     .notNull()
     .references(() => users.id), // Foreign key to `users.id`
   conversation_id: t

@@ -2,7 +2,7 @@ import { pgEnum, pgTable as table } from "drizzle-orm/pg-core";
 import * as t from "drizzle-orm/pg-core";
 import { users } from "./user"; // Import users table for the foreign key
 
-export const categoryEnum = pgEnum("post_categories", [
+const categoryEnum = pgEnum("post_categories", [
   "food_support",
   "medical_aid",
   "education",
@@ -18,7 +18,7 @@ export const categoryEnum = pgEnum("post_categories", [
 export const posts = table("posts", {
   id: t.integer().primaryKey().generatedAlwaysAsIdentity(),
   owner_id: t
-    .integer()
+    .varchar({ length: 256 })
     .notNull()
     .references(() => users.id), // Foreign key to `users.id`
   title: t.varchar({ length: 1024 }).notNull(),
@@ -32,4 +32,5 @@ export const posts = table("posts", {
   registration_end: t.timestamp({ withTimezone: true }).notNull(),
   is_open: t.boolean().notNull().default(true),
   required_people: t.integer().notNull(),
+  media_url: t.varchar({ length: 1024 }).notNull(),
 });

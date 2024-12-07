@@ -5,7 +5,7 @@ import { users } from "./user"; // Assuming users is imported
 export const notifications = table("notifications", {
   id: t.integer().primaryKey().generatedByDefaultAsIdentity(), // Primary key for the notification
   user_id: t
-    .integer()
+    .varchar()
     .notNull()
     .references(() => users.id), // Foreign key to `users.id`
   message: t.varchar({ length: 256 }).notNull(), // Message content for the notification
