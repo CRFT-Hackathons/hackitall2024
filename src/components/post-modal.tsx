@@ -20,12 +20,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { analyzeInputAnnotate } from "~/lib/helpers/textLanguage";
 import { db } from "~/lib/db";
 import { posts } from "~/lib/schema/post";
+import { useClerk } from "@clerk/nextjs";
+import { handlePostSubmit } from "./server/handlePostSubmit";
 
 interface CreateEventPostModalProps {
   trigger: React.ReactNode;
 }
 
 export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
+  const { user } = useClerk();
+
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -40,78 +44,34 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Basic validation
-    if (
-      !title ||
-      !description ||
-      !volunteersNeeded ||
-      !registrationStartDate ||
-      !registrationEndDate
-    ) {
-      console.error("Please fill in all required fields.");
-      return;
-    }
-
-    if (registrationEndDate < registrationStartDate) {
-      console.error("Registration end date must be after the start date.");
-      return;
-    }
-
-    // If all validations pass, we can proceed with posting the event
-    console.log("Event post created successfully:", {
+    const userID: string = user?.id as string;
+    const { success, error } = await handlePostSubmit({
+      userID,
       title,
       description,
       mediaUrl,
       volunteersNeeded,
-      registrationStartDate: format(registrationStartDate, "dd.MM.yyyy"),
-      registrationEndDate: format(registrationEndDate, "dd.MM.yyyy"),
+      registrationStartDate,
+      registrationEndDate,
     });
 
-    try {
-      const analyzeText: any = await analyzeInputAnnotate(
-        title + ". " + description
-      );
-
-      if (analyzeText.isToxicText) {
-        toast({
-          title: "Inappropriate Language Detected",
-          description:
-            "Your description or title do not respect our policy on inappropriate language.",
-          variant: "destructive", // This can be a custom variant depending on your styling
-        });
-
-        console.error(
-          "Your description or title do not respect our policy about the inapropiate language!\n" +
-            JSON.stringify(analyzeText.toxicCategories)
-        );
-
-        return;
-      } else {
-        toast({
-          title: "Event Posted Successfully",
-          description: "Your event has been created and posted successfully!",
-          variant: "default", // Custom variant for success
-        });
-        console.error("MAKE FUNCTIONALITIES TO ADD TO THE DATABASE");
-
-        db.insert(posts).values({
-          owner_id: "test",
-          title: "Hello, World!",
-          description: "This is my first post on this platform.",
-          created_at: new Date(),
-          category: "housing_support",
-          is_open: true,
-          registration_start: new Date(),
-          registration_end: new Date(),
-        });
-      }
-    } catch (err) {
-      console.error("Unable to call the api for verifing text");
-      throw err;
+    if (error) {
+      toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+      });
     }
 
-    // Reset form fields and close modal after submission
+    if (success) {
+      toast({
+        title: "Event Posted Successfully",
+        description: "Your event has been created and posted successfully!",
+        variant: "default",
+      });
+    }
+
+    // Reset form fields
     setTitle("");
     setDescription("");
     setMediaUrl("");

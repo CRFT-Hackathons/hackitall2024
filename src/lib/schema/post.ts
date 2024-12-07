@@ -1,6 +1,5 @@
 import { pgEnum, pgTable as table } from "drizzle-orm/pg-core";
 import * as t from "drizzle-orm/pg-core";
-import { users } from "./user"; // Import users table for the foreign key
 
 const categoryEnum = pgEnum("post_categories", [
   "food_support",

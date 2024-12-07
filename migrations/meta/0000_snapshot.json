@@ -1,5 +1,5 @@
 {
-  "id": "0f7c0a11-7578-4c82-9b76-3782395aef7d",
+  "id": "b8352895-fdcb-4a62-8166-b919e21d510f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -152,25 +152,17 @@
           "name": "required_people",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "media_url": {
+          "name": "media_url",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "posts_owner_id_users_id_fk": {
-          "name": "posts_owner_id_users_id_fk",
-          "tableFrom": "posts",
-          "tableTo": "users",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -225,47 +217,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "post_requests_post_id_posts_id_fk": {
-          "name": "post_requests_post_id_posts_id_fk",
-          "tableFrom": "post_requests",
-          "tableTo": "posts",
-          "columnsFrom": [
-            "post_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "post_requests_post_owner_id_users_id_fk": {
-          "name": "post_requests_post_owner_id_users_id_fk",
-          "tableFrom": "post_requests",
-          "tableTo": "users",
-          "columnsFrom": [
-            "post_owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "post_requests_joiner_id_users_id_fk": {
-          "name": "post_requests_joiner_id_users_id_fk",
-          "tableFrom": "post_requests",
-          "tableTo": "users",
-          "columnsFrom": [
-            "joiner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -290,34 +242,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "access_to_infos_post_id_posts_id_fk": {
-          "name": "access_to_infos_post_id_posts_id_fk",
-          "tableFrom": "access_to_infos",
-          "tableTo": "posts",
-          "columnsFrom": [
-            "post_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "access_to_infos_volunteer_id_users_id_fk": {
-          "name": "access_to_infos_volunteer_id_users_id_fk",
-          "tableFrom": "access_to_infos",
-          "tableTo": "users",
-          "columnsFrom": [
-            "volunteer_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "access_to_infos_post_id_volunteer_id_pk": {
           "name": "access_to_infos_post_id_volunteer_id_pk",
@@ -423,34 +348,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "messages_sender_id_users_id_fk": {
-          "name": "messages_sender_id_users_id_fk",
-          "tableFrom": "messages",
-          "tableTo": "users",
-          "columnsFrom": [
-            "sender_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "messages_conversation_id_conversations_id_fk": {
-          "name": "messages_conversation_id_conversations_id_fk",
-          "tableFrom": "messages",
-          "tableTo": "conversations",
-          "columnsFrom": [
-            "conversation_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -499,21 +397,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "notifications_user_id_users_id_fk": {
-          "name": "notifications_user_id_users_id_fk",
-          "tableFrom": "notifications",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

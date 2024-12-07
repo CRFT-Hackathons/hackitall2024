@@ -1,3 +1,5 @@
+"use server";
+
 import axios from "axios";
 // Input your own API key for language.googleapis
 const apiKey = "AIzaSyCerECamR0ZFb4Y0efRShiUCWKmnc-pANo";

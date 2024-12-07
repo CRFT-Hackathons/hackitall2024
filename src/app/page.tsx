@@ -6,6 +6,9 @@ import { CreatePost } from "~/components/create-a-post";
 import ProfileSidebar from "~/components/profile-sidebar";
 import DiscoverVolunteers from "~/components/discover-volunteers";
 
+import { db } from "~/lib/db";
+import { posts } from "~/lib/schema";
+
 const feedCards: FeedCardProps[] = [
   {
     name: "John Doe",
@@ -36,28 +39,23 @@ const feedCards: FeedCardProps[] = [
 ];
 
 export default function Component() {
+  db.insert(posts).values({
+    owner_id: "1",
+    title: "Hello, World!",
+    description: "This is my first post on this platform.",
+    created_at: new Date(),
+    category: "housing_support",
+    is_open: true,
+    registration_start: new Date(),
+    registration_end: new Date(),
+  });
+
   return (
     <div className="w-full min-h-screen flex flex-col items-center gap-2">
       <Navbar />
       <div className="mt-12" />
       {/* <ThemeSwitcher /> */}
 
-      {/* <div className="items-center justify-center">
-        <div className="w-full grid grid-cols-3 gap-8 justify-between p-6">
-          <div className="justify-self-end">
-            <ProfileSidebar />
-          </div>
-          <div className="flex flex-col gap-4 col-span-2 lg:col-span-1">
-            <CreatePost />
-            {feedCards.map((card, index) => (
-              <FeedCard key={index} {...card} />
-            ))}
-          </div>
-          <div className="hidden lg:block">
-            <DiscoverVolunteers />
-          </div>
-        </div>
-      </div> */}
       <div className="grid grid-cols-3 gap-8 p-8 place-content-center">
         <div className="hidden sm:flex place-content-end">
           <ProfileSidebar />
