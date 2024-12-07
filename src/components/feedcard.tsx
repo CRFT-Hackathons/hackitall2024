@@ -46,6 +46,9 @@ export default function FeedCard({
   const [volunteersCount, setVolunteersCount] = useState(0);
   const [offered, setOffered] = useState(false);
   const [repostCount, setRepostCount] = useState(0);
+  const [justClickedLike, setJustClickedLike] = useState(false);
+  const [justClickedOffer, setJustClickedOffer] = useState(false);
+
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const isOverflowing = useIsOverflowing(descriptionRef, 3);
 
@@ -54,6 +57,32 @@ export default function FeedCard({
     setVolunteersCount(Math.floor(Math.random() * 100));
     setRepostCount(Math.floor(Math.random() * 100));
   }, []);
+
+  const handleLikeClick = () => {
+    if (!liked) {
+      setLikesCount(likesCount + 1);
+      setLiked(true);
+    } else {
+      setLikesCount(likesCount - 1);
+      setLiked(false);
+    }
+    // Trigger a short scale animation
+    setJustClickedLike(true);
+    setTimeout(() => setJustClickedLike(false), 300);
+  };
+
+  const handleOfferClick = () => {
+    if (!offered) {
+      setVolunteersCount(volunteersCount + 1);
+      setOffered(true);
+    } else {
+      setVolunteersCount(volunteersCount - 1);
+      setOffered(false);
+    }
+    // Trigger a short scale animation
+    setJustClickedOffer(true);
+    setTimeout(() => setJustClickedOffer(false), 300);
+  };
 
   return (
     <div className="min-w-96">
@@ -115,43 +144,33 @@ export default function FeedCard({
         </div>
         <div className="grid grid-cols-4 items-center pt-2 border-t border-border p-4 pb-2">
           <button
-            className={
-              `flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md` +
-              (liked ? " text-blue-500" : "")
-            }
-            onClick={() => {
-              if (!liked) {
-                setLikesCount(likesCount + 1);
-                setLiked(true);
-              } else {
-                setLikesCount(likesCount - 1);
-                setLiked(false);
-              }
-            }}
+            className={`
+              flex items-center justify-center text-muted-foreground
+              hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md 
+              transition-transform duration-300 ease-in-out
+              ${liked ? "text-blue-500" : ""}
+              ${justClickedLike ? "scale-110" : ""}
+            `}
+            onClick={handleLikeClick}
           >
             <ThumbsUp className="h-6 w-6 scale-x-[-1]" />
           </button>
           <button
-            className={
-              `flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md` +
-              (offered ? " text-red-600" : "")
-            }
-            onClick={() => {
-              if (!offered) {
-                setVolunteersCount(volunteersCount + 1);
-                setOffered(true);
-              } else {
-                setVolunteersCount(volunteersCount - 1);
-                setOffered(false);
-              }
-            }}
+            className={`
+              flex items-center justify-center text-muted-foreground 
+              hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md
+              transition-transform duration-300 ease-in-out
+              ${offered ? "text-red-600" : ""}
+              ${justClickedOffer ? "scale-110" : ""}
+            `}
+            onClick={handleOfferClick}
           >
             <HeartHandshake className="h-6 w-6" />
           </button>
-          <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md">
+          <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md transition-transform duration-300 ease-in-out">
             <MessageSquare className="h-6 w-6" />
           </button>
-          <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md">
+          <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md transition-transform duration-300 ease-in-out">
             <Send className="h-6 w-6" />
           </button>
         </div>
