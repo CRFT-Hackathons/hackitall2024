@@ -39,8 +39,8 @@ export default function Component() {
   return (
     <div className="w-full min-h-screen flex flex-col items-center gap-2">
       <Navbar />
-      <div className="mt-20" />
-      <ThemeSwitcher />
+      <div className="mt-12" />
+      {/* <ThemeSwitcher /> */}
 
       {/* <div className="items-center justify-center">
         <div className="w-full grid grid-cols-3 gap-8 justify-between p-6">

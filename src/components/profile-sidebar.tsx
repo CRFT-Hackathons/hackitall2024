@@ -55,7 +55,7 @@ export default function ProfileSidebar() {
       <Card>
         <CardContent className="p-4">
           <div className="space-y-2">
-            <p className="text-sm">Unlock 4x more profile visits</p>
+            <p className="text-sm">Gain higher priority while volunteering</p>
             <Button
               variant="outline"
               className="w-full justify-start text-amber-700 hover:text-amber-800 hover:bg-amber-400"
