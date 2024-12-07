@@ -18,6 +18,8 @@ import {
 } from "./ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { analyzeInputAnnotate } from "~/lib/helpers/textLanguage";
+import { db } from "~/lib/db";
+import { posts } from "~/lib/schema/post";
 
 interface CreateEventPostModalProps {
   trigger: React.ReactNode;
@@ -92,6 +94,17 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
           variant: "default", // Custom variant for success
         });
         console.error("MAKE FUNCTIONALITIES TO ADD TO THE DATABASE");
+
+        db.insert(posts).values({
+          owner_id: "test",
+          title: "Hello, World!",
+          description: "This is my first post on this platform.",
+          created_at: new Date(),
+          category: "housing_support",
+          is_open: true,
+          registration_start: new Date(),
+          registration_end: new Date(),
+        });
       }
     } catch (err) {
       console.error("Unable to call the api for verifing text");
