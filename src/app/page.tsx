@@ -1,5 +1,14 @@
-"use client";
+"use client"
 
+import { useEffect, useRef } from "react"
+import { useInfiniteQuery } from "@tanstack/react-query"
+import { Navbar } from "@/components/navbar"
+import FeedCard, { FeedCardProps } from "@/components/feedcard"
+import { CreatePost } from "~/components/create-a-post"
+import ProfileSidebar from "~/components/profile-sidebar"
+import DiscoverVolunteers from "~/components/discover-volunteers"
+import { getPosts } from "~/lib/api"
+import { ExpandableMap } from "~/components/expandable-map"
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
@@ -11,62 +20,60 @@ import { getPosts } from "~/lib/api";
 import { ThemeSwitcher } from "~/components/theme-switcher";
 
 export default function Component() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const lastPostRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const lastPostRef = useRef<HTMLDivElement | null>(null)
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
       queryKey: ["posts"],
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
-        const posts = await getPosts(pageParam as number);
-        // console.log(posts); // Check if there are unexpected fields
-
+        const posts = await getPosts(pageParam as number)
         return posts.map((post) => ({
           ...post,
-          id: post.id.toString(), // Ensure it's a string
-          registrationStart: post.registrationStart.toISOString(), // Convert Date to string
-          registrationEnd: post.registrationEnd.toISOString(), // Convert Date to string
-          requiredPeople: post.requiredPeople ?? undefined, // Avoid passing undefined explicitly
-        }));
+          id: post.id.toString(),
+          registrationStart: post.registrationStart.toISOString(),
+          registrationEnd: post.registrationEnd.toISOString(),
+          requiredPeople: post.requiredPeople ?? undefined,
+        }))
       },
       getNextPageParam: (lastPage, allPages) =>
         lastPage.length === 5 ? allPages.length : undefined,
-    });
+    })
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const entry = entries[0];
+        const entry = entries[0]
         if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
+          fetchNextPage()
         }
       },
       { threshold: 1.0 }
-    );
+    )
 
-    observerRef.current = observer;
+    observerRef.current = observer
 
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+    return () => observer.disconnect()
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
   useEffect(() => {
-    const observer = observerRef.current;
-    const lastPost = lastPostRef.current;
+    const observer = observerRef.current
+    const lastPost = lastPostRef.current
 
     if (lastPost && observer) {
-      observer.observe(lastPost);
+      observer.observe(lastPost)
     }
 
     return () => {
       if (lastPost && observer) {
-        observer.unobserve(lastPost);
+        observer.unobserve(lastPost)
       }
-    };
-  }, [data]);
+    }
+  }, [data])
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center gap-2">
+    <div className="w-full min-h-screen flex flex-col items-center gap-2 relative">
       <Navbar />
       <div className="mt-12" />
       {/* <ThemeSwitcher /> */}
@@ -105,6 +112,9 @@ export default function Component() {
           <DiscoverVolunteers />
         </div>
       </div>
+
+      <ExpandableMap apiKey="AIzaSyDZzn4QXRdUAVXnRxfXXroa4E2ThsONiJM" />
     </div>
-  );
+  )
 }
+
