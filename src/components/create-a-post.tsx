@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { VideoIcon, ImageIcon, FileTextIcon } from "lucide-react";
 import { type LucideIcon } from "lucide-react";
+import { CreateEventPostModal } from "./post-modal";
 
 export function CreatePost() {
   const { user } = useClerk();
@@ -19,12 +20,16 @@ export function CreatePost() {
             className="rounded-full"
           />
         </Avatar>
-        <Button
-          variant="outline"
-          className="w-full justify-start text-gray-500 font-normal rounded-full p-6 hover:bg-black/5 hover:text-black dark:hover:bg-background dark:hover:text-gray-400"
-        >
-          Start a post
-        </Button>
+        <CreateEventPostModal
+          trigger={
+            <Button
+              variant="outline"
+              className="w-full justify-start text-gray-500 font-normal rounded-full p-6 hover:bg-black/5 hover:text-black dark:hover:bg-background dark:hover:text-gray-400"
+            >
+              Start a post
+            </Button>
+          }
+        />
       </div>
       <div className="flex justify-between">
         <MediaOption icon={VideoIcon} label="Video" />

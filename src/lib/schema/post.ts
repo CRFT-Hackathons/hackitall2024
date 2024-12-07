@@ -16,9 +16,7 @@ const categoryEnum = pgEnum("post_categories", [
 
 export const posts = table("posts", {
   id: t.integer().primaryKey().generatedAlwaysAsIdentity(),
-  owner_id: t
-    .varchar({ length: 256 })
-    .notNull(),
+  owner_id: t.varchar({ length: 256 }).notNull(),
   title: t.varchar({ length: 1024 }).notNull(),
   category: categoryEnum().notNull(),
   description: t.varchar({ length: 1024 }).notNull(),
@@ -30,5 +28,5 @@ export const posts = table("posts", {
   registration_end: t.timestamp({ withTimezone: true }).notNull(),
   is_open: t.boolean().notNull().default(true),
   required_people: t.integer(),
-  media_url: t.varchar({ length: 1024 })
+  media_url: t.varchar({ length: 1024 }),
 });

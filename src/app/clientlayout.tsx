@@ -3,6 +3,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "~/components/theme";
+import { Toaster } from "~/components/ui/toaster";
 
 import { cn } from "~/lib/utils";
 
@@ -19,6 +20,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           disableTransitionOnChange
         >
           <div>{children}</div>
+          <Toaster />
         </ThemeProvider>
       </ClerkProvider>
     </QueryClientProvider>
