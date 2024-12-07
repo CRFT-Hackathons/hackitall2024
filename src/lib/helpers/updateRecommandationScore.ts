@@ -29,9 +29,25 @@ export async function updateUserRecomandationScoreOnLike(
     .where(eq(users.id, userID))
     .then((rows) => rows[0]?.recommand_score || 0);
 
+  let updateScore = currentRecommandationScore as number;
+  updateScore += postScore;
+  updateScore /= 2;
+
   const newScore: number = calculateNextRecomanadationScore(
     currentRecommandationScore as number,
-    (postScore + (currentRecommandationScore as number)) / 2
+    updateScore
+  );
+
+  console.error(updateScore);
+  console.error(
+    "Post score",
+    postScore,
+    "Current string ",
+    currentRecommandationScore,
+    "Current number",
+    currentRecommandationScore as number,
+    "New",
+    newScore
   );
   await db
     .update(users)
@@ -40,8 +56,7 @@ export async function updateUserRecomandationScoreOnLike(
 }
 
 export async function updateUserRecomandationScoreOnScroll(
-  userID: string,
-  latestPostScore: number[]
+  userID: string
 ): Promise<void> {
   const currentRecommandationScore = await db
     .select({ recommand_score: users.recommand_score })
@@ -51,10 +66,9 @@ export async function updateUserRecomandationScoreOnScroll(
 
   const newScore: number = calculateNextRecomanadationScore(
     currentRecommandationScore as number,
-    latestPostScore.reduce((acc, curr) => acc + curr, 0) /
-      latestPostScore.length +
-      (Math.random() - 1 / 2) * 2
+    Math.random() * 10
   );
+  console.error("Current", currentRecommandationScore, "New", newScore);
   await db
     .update(users)
     .set({ recommand_score: String(newScore) })
@@ -70,11 +84,11 @@ export async function updateUserRecomandationScoreOnPost(
     .from(users)
     .where(eq(users.id, userID))
     .then((rows) => rows[0]?.recommand_score || 0);
-  console.error(currentRecommandationScore, typeof currentRecommandationScore);
   const newScore: number = calculateNextRecomanadationScore(
     currentRecommandationScore as number,
     postScore
   );
+  console.error("Current", currentRecommandationScore, "New", newScore);
   await db
     .update(users)
     .set({ recommand_score: String(newScore) })

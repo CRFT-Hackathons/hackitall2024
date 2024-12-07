@@ -8,11 +8,13 @@ import { CreatePost } from "~/components/create-a-post";
 import ProfileSidebar from "~/components/profile-sidebar";
 import DiscoverVolunteers from "~/components/discover-volunteers";
 import { getPosts } from "~/lib/api";
+import { useClerk } from "@clerk/nextjs";
+import { updateUserRecomandationScoreOnScroll } from "~/lib/helpers/updateRecommandationScore";
 
 export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
-
+  const { user } = useClerk();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
       queryKey: ["posts"],
@@ -34,10 +36,15 @@ export default function Component() {
     });
 
   useEffect(() => {
+    async function callUpdateRecommandationScore() {
+      await updateUserRecomandationScoreOnScroll(user?.id as string);
+    }
+
     const observer = new IntersectionObserver(
-      (entries) => {
+      async (entries) => {
         const entry = entries[0];
         if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          await callUpdateRecommandationScore();
           fetchNextPage();
         }
       },
