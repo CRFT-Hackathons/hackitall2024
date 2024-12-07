@@ -2,6 +2,8 @@ import { Navbar } from "@/components/navbar";
 import FeedCard, { FeedCardProps } from "@/components/feedcard";
 import { ThemeSwitcher } from "~/components/theme-switcher";
 import { Text } from "~/components/ui/typography";
+import { CreatePost } from "~/components/create-a-post";
+import ProfileSidebar from "~/components/profile-sidebar";
 
 const feedCards: FeedCardProps[] = [
   {
@@ -37,15 +39,22 @@ export default function Component() {
     <div className="w-full min-h-screen flex flex-col items-center gap-2">
       <Navbar />
       <div className="mt-20" />
-
-      <div className="flex flex-col gap-4">
-        {feedCards.map((card, index) => (
-          <FeedCard key={index} {...card} />
-        ))}
-      </div>
-
-      <Text>Hello world</Text>
       <ThemeSwitcher />
+
+      <div className="max-w-7xl mx-auto">
+        <div className="w-full grid grid-cols-3 gap-8">
+          <div className="flex justify-end">
+            <ProfileSidebar />
+          </div>
+          {/* this should be in the middle */}
+          <div className="w-96 flex flex-col gap-4">
+            <CreatePost />
+            {feedCards.map((card, index) => (
+              <FeedCard key={index} {...card} />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
