@@ -47,7 +47,7 @@ const GoogleIcon = (props: SVGProps<SVGSVGElement>) => (
 
 export default function SignInPage() {
   return (
-    <div className="grid w-full grow items-center px-4 sm:justify-center">
+    <div className="h-screen grid w-full grow items-center px-4 sm:justify-center">
       <SignIn.Root>
         <Clerk.Loading>
           {(isGlobalLoading) => (
@@ -55,7 +55,7 @@ export default function SignInPage() {
               <SignIn.Step name="start">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
-                    <CardTitle>Sign in to Acme Co</CardTitle>
+                    <CardTitle>Sign in to CRFT</CardTitle>
                     <CardDescription>
                       Welcome back! Please sign in to continue
                     </CardDescription>
