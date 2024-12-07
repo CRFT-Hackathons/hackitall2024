@@ -8,15 +8,22 @@ import {
   HeartHandshake,
   Send,
   Dot,
+  Users,
+  CalendarDays,
 } from "lucide-react";
-import { set } from "date-fns";
+import { StatusBadge } from "./StatusBadge";
 
 export interface FeedCardProps {
-  name: string;
+  id: string;
+  ownerId: string;
   title: string;
+  category: string;
   description: string;
-  avatar?: string;
-  image?: string;
+  registrationStart?: string | undefined | null; // Assuming ISO string, adjust type if necessary
+  registrationEnd?: string | undefined | null; // Assuming ISO string, adjust type if necessary
+  isOpen: boolean;
+  requiredPeople?: number | undefined | null;
+  mediaUrl?: string | undefined | null;
 }
 
 function useIsOverflowing(ref: React.RefObject<HTMLElement>, lines: number) {
@@ -35,10 +42,14 @@ function useIsOverflowing(ref: React.RefObject<HTMLElement>, lines: number) {
 }
 
 export default function FeedCard({
-  name,
   title,
   description,
-  avatar,
+  category,
+  registrationStart,
+  registrationEnd,
+  isOpen,
+  requiredPeople,
+  mediaUrl,
 }: FeedCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
@@ -51,7 +62,7 @@ export default function FeedCard({
 
   useEffect(() => {
     setLikesCount(Math.floor(Math.random() * 100));
-    setVolunteersCount(Math.floor(Math.random() * 100));
+    setVolunteersCount(Math.floor(Math.random() * (requiredPeople || 100)));
     setRepostCount(Math.floor(Math.random() * 100));
   }, []);
 
@@ -61,19 +72,11 @@ export default function FeedCard({
         <div>
           <div className="flex items-center mb-4 p-4 pb-0">
             <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-              {avatar ? (
-                <img
-                  src={avatar}
-                  alt={name}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <User className="h-6 w-6 text-muted-foreground" />
-              )}
+              <User className="h-6 w-6 text-muted-foreground" />
             </div>
             <div className="ml-4">
-              <h2 className="text-lg font-semibold text-foreground">{name}</h2>
-              <p className="text-sm text-muted-foreground">{title}</p>
+              <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+              <p className="text-sm text-muted-foreground">{category}</p>
             </div>
           </div>
           <div className="mb-2 px-4">
@@ -92,12 +95,44 @@ export default function FeedCard({
               </button>
             )}
           </div>
-          <div className="pb-2">
-            <img
-              src="https://picsum.photos/600/200"
-              alt=""
-              className="w-full h-48 object-cover rounded-none"
-            />
+          {mediaUrl && (
+            <div className="pb-2">
+              <img
+                src={mediaUrl}
+                alt="Post media"
+                className="w-full max-h-96 object-cover rounded-none"
+              />
+            </div>
+          )}
+          <div className="px-4 text-sm text-muted-foreground py-2">
+            <div className="flex justify-start items-center">
+              {registrationStart && registrationEnd && (
+                <div className="flex items-center -space-x-1">
+                  <p>
+                    <b>Registration Period</b>:{" "}
+                    {new Date(registrationStart).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                    })}
+                    {" - "}
+                    {new Date(registrationEnd).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center justify-between py-4">
+              <StatusBadge isOpen={isOpen} />
+              {requiredPeople && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Users className="w-4 h-4" />
+                  <span>{requiredPeople} people required</span>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex justify-between text-sm px-4 pb-2 items-center">
             <div className="flex gap-1 items-center">
@@ -115,35 +150,25 @@ export default function FeedCard({
         </div>
         <div className="grid grid-cols-4 items-center pt-2 border-t border-border p-4 pb-2">
           <button
-            className={
-              `flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md` +
-              (liked ? " text-blue-500" : "")
-            }
+            className={`flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md ${
+              liked ? "text-blue-500" : ""
+            }`}
             onClick={() => {
-              if (!liked) {
-                setLikesCount(likesCount + 1);
-                setLiked(true);
-              } else {
-                setLikesCount(likesCount - 1);
-                setLiked(false);
-              }
+              setLikesCount(liked ? likesCount - 1 : likesCount + 1);
+              setLiked(!liked);
             }}
           >
             <ThumbsUp className="h-6 w-6 scale-x-[-1]" />
           </button>
           <button
-            className={
-              `flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md` +
-              (offered ? " text-red-600" : "")
-            }
+            className={`flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md ${
+              offered ? "text-red-600" : ""
+            }`}
             onClick={() => {
-              if (!offered) {
-                setVolunteersCount(volunteersCount + 1);
-                setOffered(true);
-              } else {
-                setVolunteersCount(volunteersCount - 1);
-                setOffered(false);
-              }
+              setVolunteersCount(
+                offered ? volunteersCount - 1 : volunteersCount + 1
+              );
+              setOffered(!offered);
             }}
           >
             <HeartHandshake className="h-6 w-6" />
