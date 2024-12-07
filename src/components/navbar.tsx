@@ -22,6 +22,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useClerk } from "@clerk/nextjs";
 
+import Image from "next/image";
+import Logo from "../../public/logo.svg";
+
 export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -30,40 +33,34 @@ export function Navbar() {
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0">
-              <img
-                className="h-8 w-8"
-                src="/placeholder.svg?height=32&width=32"
-                alt="LinkedIn"
+            <Link href="/">
+              <Image
+                className="h-10 w-10 rounded"
+                src={Logo}
+                alt="CRFT"
+                width={32}
+                height={32}
               />
             </Link>
-            <div className="ml-4 relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
+            <div className="relative ml-4 hidden sm:block">
               <Input
                 type="text"
                 placeholder="Search"
-                className="pl-10 pr-4 py-5 border-none outline-none bg-muted-background text-foreground rounded-md focus:ring-ring focus:border-ring block w-full sm:text-sm shadow-none bg-white/5 "
+                className="hidden sm:block pl-10 pr-4 py-5 border-none outline-none bg-muted-background text-foreground rounded-md focus:ring-ring focus:border-ring w-full sm:text-sm shadow-none dark:bg-white/5 bg-black/5"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+              <div className="absolute top-1/2 left-3 -translate-y-1/2 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <NavItem icon={<Home />} label="Home" href="/" />
-            <NavItem icon={<Users />} label="My Network" href="/mynetwork" />
-            <NavItem icon={<Briefcase />} label="Jobs" href="/jobs" />
-            <NavItem
-              icon={<MessageSquare />}
-              label="Messaging"
-              href="/messaging"
-            />
-            <NavItem
-              icon={<Bell />}
-              label="Notifications"
-              href="/notifications"
-            />
+            <NavItem icon={<Users />} label="My Network" href="#" />
+            <NavItem icon={<Briefcase />} label="Jobs" href="#" />
+            <NavItem icon={<MessageSquare />} label="Messaging" href="#" />
+            <NavItem icon={<Bell />} label="Notifications" href="#" />
             <UserMenu />
           </div>
         </div>
@@ -84,28 +81,32 @@ function NavItem({
   return (
     <Link
       href={href}
-      className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent focus:outline-none focus:text-foreground focus:bg-accent"
+      className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-white focus:outline-none focus:text-foreground"
     >
       <div className="flex flex-col items-center">
         {icon}
-        <span className="mt-1">{label}</span>
+        <span className="mt-1 text-sm hidden md:block text-nowrap">
+          {label}
+        </span>
       </div>
     </Link>
   );
 }
 
 function UserMenu() {
-  const { signOut } = useClerk();
+  const { signOut, user } = useClerk();
+
+  console.log(user);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="ml-4 flex flex-col items-center text-sm font-medium text-muted-foreground hover:text-foreground focus:outline-none focus:text-foreground">
+        <button className="ml-4 flex flex-col items-center text-sm font-medium text-muted-foreground hover:text-foreground focus:outline-none focus:text-foreground focus:bg-transparent">
           <Avatar className="w-7 h-7">
-            <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
+            <AvatarImage src={user?.imageUrl} alt="User" />
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
-          <span className="ml-1">Me ▼</span>
+          <span className="ml-1 text-nowrap hidden md:block">Me ▼</span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
