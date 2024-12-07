@@ -42,7 +42,9 @@ export default function FeedCard({
 }: FeedCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [liked, setLiked] = useState(false);
   const [volunteersCount, setVolunteersCount] = useState(0);
+  const [offered, setOffered] = useState(false);
   const [repostCount, setRepostCount] = useState(0);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const isOverflowing = useIsOverflowing(descriptionRef, 3);
@@ -54,7 +56,7 @@ export default function FeedCard({
   }, []);
 
   return (
-    <div className="w-96 mx-auto">
+    <div className="min-w-96">
       <div className="bg-card text-card-foreground shadow-sm border border-border rounded-md overflow-hidden">
         <div>
           <div className="flex items-center mb-4 p-4 pb-0">
@@ -112,10 +114,38 @@ export default function FeedCard({
           </div>
         </div>
         <div className="grid grid-cols-4 items-center pt-2 border-t border-border p-4 pb-2">
-          <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md">
+          <button
+            className={
+              `flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md` +
+              (liked ? " text-blue-500" : "")
+            }
+            onClick={() => {
+              if (!liked) {
+                setLikesCount(likesCount + 1);
+                setLiked(true);
+              } else {
+                setLikesCount(likesCount - 1);
+                setLiked(false);
+              }
+            }}
+          >
             <ThumbsUp className="h-6 w-6 scale-x-[-1]" />
           </button>
-          <button className="flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md">
+          <button
+            className={
+              `flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md` +
+              (offered ? " text-red-600" : "")
+            }
+            onClick={() => {
+              if (!offered) {
+                setVolunteersCount(volunteersCount + 1);
+                setOffered(true);
+              } else {
+                setVolunteersCount(volunteersCount - 1);
+                setOffered(false);
+              }
+            }}
+          >
             <HeartHandshake className="h-6 w-6" />
           </button>
           <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md">

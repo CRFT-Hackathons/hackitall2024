@@ -14,10 +14,13 @@ module.exports = {
   		center: 'true',
   		padding: '2rem',
   		screens: {
-  			'2xl': '1400px'
+  			'2xl': '1400px',
   		}
   	},
   	extend: {
+		screens: {
+			'lgxl': '1200px'
+		},
   		boxShadow: {
   			shadow: 'var(--shadow)',
   			'border-primary': '0 1px var(--surface-a2), 0 -1px var(--surface-a3), 0 0 0 1px var(--surface-a4), var(--shadow)',

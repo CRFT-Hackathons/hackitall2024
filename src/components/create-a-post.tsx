@@ -10,7 +10,7 @@ import { type LucideIcon } from "lucide-react";
 export function CreatePost() {
   const { user } = useClerk();
   return (
-    <Card className="w-full p-4 space-y-4">
+    <Card className="min-w-96 p-4 space-y-4">
       <div className="flex items-center space-x-4">
         <Avatar className="w-12 h-12">
           <img

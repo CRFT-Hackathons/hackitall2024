@@ -10,7 +10,7 @@ import { useClerk } from "@clerk/nextjs";
 export default function ProfileSidebar() {
   const { user } = useClerk();
   return (
-    <div className="w-full max-w-[256px] space-y-4">
+    <div className="w-[256px] flex flex-col gap-4">
       {/* Profile Card */}
       <Card>
         <CardContent className="p-0">
