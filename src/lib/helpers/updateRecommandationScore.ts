@@ -19,6 +19,25 @@ function calculateNextRecomanadationScore(tn: number, Tn: number): number {
 // const Tn = 8;
 // const TnPlus1 = calculateNextRecomanadationScore(tn, Tn);
 // console.log(`The predicted next recomandation score (Tn+1) is: ${TnPlus1}`);
+export async function updateUserRecomandationScoreOnLike(
+  userID: string,
+  postScore: number
+): Promise<void> {
+  const currentRecommandationScore = await db
+    .select({ recommand_score: users.recommand_score })
+    .from(users)
+    .where(eq(users.id, userID))
+    .then((rows) => rows[0]?.recommand_score || 0);
+
+  const newScore: number = calculateNextRecomanadationScore(
+    currentRecommandationScore as number,
+    (postScore + (currentRecommandationScore as number)) / 2
+  );
+  await db
+    .update(users)
+    .set({ recommand_score: String(newScore) })
+    .where(eq(users.id, userID));
+}
 
 export async function updateUserRecomandationScoreOnScroll(
   userID: string,
