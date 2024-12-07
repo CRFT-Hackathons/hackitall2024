@@ -192,7 +192,7 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
               </PopoverContent>
             </Popover>
           </div>
-          <Button type="submit" className="w-full">
+          <Button variant="accent" type="submit" className="w-full">
             Create Event Post
           </Button>
         </form>

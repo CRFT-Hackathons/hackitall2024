@@ -8,6 +8,7 @@ import { CreatePost } from "~/components/create-a-post";
 import ProfileSidebar from "~/components/profile-sidebar";
 import DiscoverVolunteers from "~/components/discover-volunteers";
 import { getPosts } from "~/lib/api";
+import { ThemeSwitcher } from "~/components/theme-switcher";
 
 export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -68,6 +69,7 @@ export default function Component() {
     <div className="w-full min-h-screen flex flex-col items-center gap-2">
       <Navbar />
       <div className="mt-12" />
+      {/* <ThemeSwitcher /> */}
 
       <div className="grid grid-cols-3 gap-8 p-8 place-content-center">
         <div className="hidden sm:flex place-content-end">

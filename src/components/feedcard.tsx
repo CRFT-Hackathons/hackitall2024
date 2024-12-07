@@ -12,6 +12,9 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { createAvatar } from "@dicebear/core";
+import { notionistsNeutral } from "@dicebear/collection";
 
 export interface FeedCardProps {
   id: string;
@@ -60,10 +63,19 @@ export default function FeedCard({
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const isOverflowing = useIsOverflowing(descriptionRef, 3);
 
+  const [avatar, setAvatar] = useState<string>("");
+
+  useEffect(() => {
+    const svgAvatar = createAvatar(notionistsNeutral, {
+      seed: `${Math.random()}`.slice(2),
+    });
+    setAvatar(svgAvatar.toDataUri());
+  }, []);
+
   useEffect(() => {
     setLikesCount(Math.floor(Math.random() * 100));
     setVolunteersCount(Math.floor(Math.random() * (requiredPeople || 100)));
-    setRepostCount(Math.floor(Math.random() * 100));
+    setRepostCount(Math.floor(Math.random() * ((requiredPeople ?? 30) * 3)));
   }, []);
 
   return (
@@ -72,11 +84,22 @@ export default function FeedCard({
         <div>
           <div className="flex items-center mb-4 p-4 pb-0">
             <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-              <User className="h-6 w-6 text-muted-foreground" />
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={avatar} alt="User avatar" />
+                <AvatarFallback>U</AvatarFallback>
+              </Avatar>
             </div>
             <div className="ml-4">
               <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-              <p className="text-sm text-muted-foreground">{category}</p>
+              <p className="text-sm text-muted-foreground font-medium">
+                {category
+                  .split("_")
+                  .map(
+                    (word) =>
+                      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                  )
+                  .join(" ")}
+              </p>
             </div>
           </div>
           <div className="mb-2 px-4">
@@ -129,7 +152,7 @@ export default function FeedCard({
               {requiredPeople && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Users className="w-4 h-4" />
-                  <span>{requiredPeople} people required</span>
+                  <span>{requiredPeople} volunteers required</span>
                 </div>
               )}
             </div>
