@@ -6,6 +6,7 @@ import { ThemeProvider } from "~/components/theme";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+import { Toaster } from "~/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,6 +26,8 @@ export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
             enableSystem
             disableTransitionOnChange
           >
+            <Toaster />
+
             {props.children}
           </ThemeProvider>
         </body>

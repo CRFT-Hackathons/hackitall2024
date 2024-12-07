@@ -1,7 +1,6 @@
 import axios from "axios";
-
 // Input your own API key for language.googleapis
-const apiKey = process.env.NLP_API_KEY;
+const apiKey = "AIzaSyCerECamR0ZFb4Y0efRShiUCWKmnc-pANo";
 const annotateUrl = `https://language.googleapis.com/v2/documents:annotateText`;
 const sentimentUrl =
   "https://language.googleapis.com/v2/documents:analyzeSentiment";
@@ -41,6 +40,7 @@ export const analyzeInputAnnotate = async (input: string) => {
         toxicCategories.push(category.name);
       }
     }
+    console.error(toxicCategories);
     return {
       isToxicText: isToxicText,
       toxicCategories: toxicCategories,
