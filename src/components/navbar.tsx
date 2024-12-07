@@ -29,7 +29,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <nav className="w-full bg-background border-b border-border">
+    <nav className="w-full bg-background border-b border-border fixed">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -69,6 +69,8 @@ export function Navbar() {
   );
 }
 
+import { usePathname } from "next/navigation";
+
 function NavItem({
   icon,
   label,
@@ -78,10 +80,17 @@ function NavItem({
   label: string;
   href: string;
 }) {
+  const pathname = usePathname();
+  const isActive = href === pathname;
   return (
     <Link
       href={href}
-      className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-white focus:outline-none focus:text-foreground"
+      className={
+        `px-3 py-2 text-sm font-medium text-muted-foreground hover:text-black dark:hover:text-white focus:outline-none focus:text-foreground` +
+        (isActive
+          ? " bg-white/5 dark:bg-black/5 rounded-none text-black dark:text-white border-b dark:border-white border-black"
+          : "")
+      }
     >
       <div className="flex flex-col items-center">
         {icon}
@@ -95,8 +104,6 @@ function NavItem({
 
 function UserMenu() {
   const { signOut, user } = useClerk();
-
-  console.log(user);
 
   return (
     <DropdownMenu>
