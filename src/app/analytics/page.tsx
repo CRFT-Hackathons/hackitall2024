@@ -193,7 +193,7 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="p-3">
                   <div className="text-lg md:text-2xl font-bold">
-                    #<NumberTicker value={42} />
+                    #<NumberTicker value={28} />
                   </div>
                 </CardContent>
               </Card>
