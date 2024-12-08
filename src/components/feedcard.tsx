@@ -226,9 +226,8 @@ export default function FeedCard({
               liked ? "text-blue-500" : ""
             }`}
             onClick={async () => {
-              const postScore = 0;
               type Category = keyof typeof categoryMap;
-              console.error(category, categoryMap[category as Category]);
+
               await updateUserRecomandationScoreOnLike(
                 user?.id as string,
                 categoryMap[category as Category]
