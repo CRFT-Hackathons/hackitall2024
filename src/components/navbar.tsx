@@ -59,7 +59,7 @@ export function Navbar() {
             <NavItem icon={<Home />} label="Home" href="/" />
             <NavItem icon={<Users />} label="My Network" href="#" />
             <NavItem icon={<Briefcase />} label="Jobs" href="#" />
-            <NavItem icon={<MessageSquare />} label="Messaging" href="#" />
+            <NavItem icon={<MessageSquare />} label="Messaging" href="/messages" />
             <NavItem icon={<Bell />} label="Notifications" href="#" />
             <UserMenu />
           </div>
