@@ -2,15 +2,16 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { APIProvider, Map, useMap, MapEvent, AdvancedMarker } from "@vis.gl/react-google-maps";
-import { MapPin, X, ZoomIn, ZoomOut, Flame } from 'lucide-react';
+import { MapPin, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { generateBucharestGeoJSON } from "./utils/generateGeoJSON";
 import { Heatmap } from "./heatmap";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ExpandableMapProps {
   apiKey: string;
 }
-// a
+
 function ZoomControls({
   zoom,
   setZoom,
@@ -71,7 +72,7 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
   
   const markerPositions = useMemo(() => {
     const features = heatmapData.features;
-    const selectedPoints = features.filter((_, index) => index % 2 === 0); // Select every other point
+    const selectedPoints = features.filter((_, index) => index % 2 === 0);
     return selectedPoints.map(feature => ({
       lat: feature.geometry.coordinates[1],
       lng: feature.geometry.coordinates[0],
@@ -126,6 +127,19 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                         setZoom(e.map.getZoom() ?? 11)
                       }
                     >
+                      <div className="absolute top-2 left-2 z-10">
+                        <Tabs defaultValue={showHeatmap ? "heatmap" : "markers"} onValueChange={(value) => setShowHeatmap(value === "heatmap")}>
+                          <TabsList className="grid w-full grid-cols-2 bg-white/90 backdrop-blur-sm">
+                            <TabsTrigger value="heatmap" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300">
+                              Heatmap
+                            </TabsTrigger>
+                            <TabsTrigger value="markers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300">
+                              Markers
+                            </TabsTrigger>
+                          </TabsList>
+                        </Tabs>
+                      </div>
+
                       {showHeatmap ? (
                         <Heatmap geojson={heatmapData} radius={20} opacity={0.6} />
                       ) : (
@@ -136,9 +150,9 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                             onMouseEnter={() => setHoveredMarker(index)}
                             onMouseLeave={() => setHoveredMarker(null)}
                           >
-                            <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white shadow-md transition-transform hover:scale-110" />
+                            <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white shadow-md transition-all duration-300 hover:scale-110 hover:bg-red-600 hover:shadow-lg" />
                             {hoveredMarker === index && (
-                              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-white p-2 rounded shadow-lg whitespace-nowrap z-10">
+                              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm p-2 rounded shadow-lg whitespace-nowrap z-10 transition-opacity duration-300">
                                 <div className="text-sm font-medium">
                                   {position.names.map((name, idx) => (
                                     <div key={idx}>{name}</div>
@@ -156,20 +170,11 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute top-2 right-2 z-10 rounded-full bg-white"
+                  className="absolute top-2 right-2 z-10 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white/95 transition-all duration-300"
                   onClick={() => setIsExpanded(false)}
                 >
                   <X className="h-4 w-4" />
                   <span className="sr-only">Close map</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="absolute top-2 left-2 z-10 rounded-full bg-white"
-                  onClick={() => setShowHeatmap((prev) => !prev)}
-                >
-                  <Flame className="h-4 w-4" />
-                  <span className="sr-only">Toggle Heatmap</span>
                 </Button>
               </div>
             </div>
