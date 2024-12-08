@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Navbar } from "@/components/navbar"
-import { Progress } from "@/components/ui/progress"
 import { useUser } from "@clerk/nextjs"
+import { ActivityChart } from "@/components/ActivityChart"
 
 interface Contributor {
   id: number
@@ -16,38 +16,54 @@ interface Contributor {
   rank: number
 }
 
+function SlimProgress({ value }: { value: number }) {
+  return (
+    <div className="relative w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+      <div 
+        className="absolute top-0 left-0 h-full bg-purple-500 transition-all duration-300 ease-in-out rounded-full"
+        style={{ width: `${value}%` }}
+      />
+    </div>
+  )
+}
+
 export default function Page() {
   const { user } = useUser()
-  const [contributors] = useState<Contributor[]>([
-    {
-      id: 1,
-      name: "John Doe",
-      contributions: 187,
-      avatar: "https://github.com/shadcn.png",
-      rank: 1
-    },
-    {
-      id: 2,
-      name: "Jane Smith", 
-      contributions: 163,
-      avatar: "https://github.com/shadcn.png",
-      rank: 2
-    },
-    {
-      id: 3,
-      name: "Bob Wilson",
-      contributions: 142,
-      avatar: "https://github.com/shadcn.png", 
-      rank: 3
-    }
-  ])
+  const [contributors, setContributors] = useState<Contributor[]>([])
+  const [contributionGrid, setContributionGrid] = useState<number[][]>([])
 
-  // Generate contribution data for the grid
-  const [contributionGrid] = useState(() => 
-    Array.from({ length: 52 }, () =>
+  useEffect(() => {
+    // Generate contributors data
+    setContributors([
+      {
+        id: 1,
+        name: "John Doe",
+        contributions: 187,
+        avatar: "https://github.com/shadcn.png",
+        rank: 1
+      },
+      {
+        id: 2,
+        name: "Jane Smith", 
+        contributions: 163,
+        avatar: "https://github.com/shadcn.png",
+        rank: 2
+      },
+      {
+        id: 3,
+        name: "Bob Wilson",
+        contributions: 142,
+        avatar: "https://github.com/shadcn.png", 
+        rank: 3
+      }
+    ])
+
+    // Generate contribution grid data
+    const grid = Array.from({ length: 52 }, () =>
       Array.from({ length: 7 }, () => Math.floor(Math.random() * 3))
     )
-  )
+    setContributionGrid(grid)
+  }, [])
 
   const progress = (187 / 200) * 100
 
@@ -65,7 +81,7 @@ export default function Page() {
               <h1 className="text-2xl font-bold">Your Analytics</h1>
               <p className="text-gray-500">Next achievement: 200 contributions (13 to go!)</p>
               <div className="relative w-[60%] mt-2">
-                <Progress value={progress} className="w-full" style={{ backgroundColor: 'hsl(var(--accent) / 0.2)' }} />
+                <SlimProgress value={progress} />
                 <span className="absolute -right-12 top-1/2 -translate-y-1/2 text-sm text-gray-500">{Math.round(progress)}%</span>
               </div>
             </div>
@@ -100,6 +116,8 @@ export default function Page() {
             </div>
           </div>
 
+          <ActivityChart />
+
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>Contribution Activity</CardTitle>
@@ -115,8 +133,8 @@ export default function Page() {
                           day === 0
                             ? 'bg-gray-100'
                             : day === 1
-                            ? 'bg-green-300'
-                            : 'bg-green-400'
+                            ? 'bg-purple-500'
+                            : 'bg-purple-300'
                         }`}
                       />
                     ))}

@@ -107,7 +107,7 @@ export default function ProfileSidebar() {
               </span>
             </div>
             <Link
-              href="#"
+              href="/analytics"
               className="inline-block text-sm text-muted-foreground hover:text-blue-600 hover:underline"
             >
               View all analytics
