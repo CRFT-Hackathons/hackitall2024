@@ -1,13 +1,5 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { Navbar } from "@/components/navbar"
-import FeedCard, { FeedCardProps } from "@/components/feedcard"
-import { CreatePost } from "~/components/create-a-post"
-import ProfileSidebar from "~/components/profile-sidebar"
-import DiscoverVolunteers from "~/components/discover-volunteers"
-import { getPosts } from "~/lib/api"
 import { ExpandableMap } from "~/components/expandable-map"
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
