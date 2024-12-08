@@ -1,28 +1,28 @@
-"use client"
+import React from "react";
+import { cn } from "~/lib/utils";
 
-import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
+interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
+  value?: number;
+}
 
-import { cn } from "~/lib/utils"
-
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative h-2 w-full overflow-hidden rounded-full bg-primary/20",
-      className
-    )}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
-      className="h-full w-full flex-1 bg-primary transition-all"
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-))
-Progress.displayName = ProgressPrimitive.Root.displayName
-
-export { Progress }
+export function Progress({ className, value, ...props }: ProgressProps) {
+  return (
+    <div
+      className={cn(
+        "relative h-6 w-full overflow-hidden rounded-full bg-gray-200 border-2 border-red-500",
+        className
+      )}
+      {...props}
+    >
+      <div
+        className="h-full w-full flex-1 transition-all bg-[length:16px_16px] bg-repeat-x animate-[candycane_5s_linear_infinite]"
+        style={{
+          transform: `translateX(-${100 - (value || 0)}%)`,
+          backgroundImage:
+            "linear-gradient(-45deg, transparent 25%, red 25%, red 50%, transparent 50%, transparent 75%, red 75%, red 100%), linear-gradient(45deg, transparent 25%, white 25%, white 50%, transparent 50%, transparent 75%, white 75%, white 100%)",
+          backgroundSize: "16px 16px, 16px 16px",
+        }}
+      />
+    </div>
+  );
+}
