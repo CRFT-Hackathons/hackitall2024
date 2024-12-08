@@ -9,13 +9,13 @@ export function Progress({ className, value, ...props }: ProgressProps) {
   return (
     <div
       className={cn(
-        "relative h-6 w-full overflow-hidden rounded-full bg-gray-200 border-2 border-red-500",
+        "relative h-6 w-full overflow-hidden rounded-full border-2 border-red-500",
         className
       )}
       {...props}
     >
       <div
-        className="h-full w-full flex-1 transition-all bg-[length:16px_16px] bg-repeat-x animate-[candycane_5s_linear_infinite]"
+        className="h-full w-full flex-1 transition-all bg-white bg-[length:16px_16px] bg-repeat-x animate-[candycane_5s_linear_infinite]"
         style={{
           transform: `translateX(-${100 - (value || 0)}%)`,
           backgroundImage:

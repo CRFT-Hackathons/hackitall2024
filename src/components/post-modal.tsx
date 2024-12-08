@@ -67,7 +67,7 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
       toast({
         title: "Event Posted Successfully",
         description: "Your event has been created and posted successfully!",
-        variant: "default",
+        variant: "success",
       });
     }
 

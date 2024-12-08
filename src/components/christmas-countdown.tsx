@@ -34,7 +34,7 @@ export function ChristmasCountdown() {
     toast({
       title: "A new gift to a child!",
       description: "You can make the christmas of a needy child better!",
-      // variant: "success",
+      variant: "success",
     });
   }, [progress]);
   useEffect(() => {

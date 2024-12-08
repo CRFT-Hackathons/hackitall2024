@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
 import { ThemeSwitcher } from "./theme-switcher";
+import { Separator } from "@/components/ui/separator";
 
 interface BadgeProps {
   icon: React.ElementType;
@@ -90,7 +91,10 @@ export default function ProfileSidebar() {
           <h3 className="text-sm font-semibold mb-2">Achievements</h3>
           <div className="space-y-2">
             {badges.map((badge, index) => (
-              <Badge key={index} {...badge} />
+              <div key={index}>
+                <Badge {...badge} />
+                {index < badges.length - 1 && <Separator className="mb-4" />}
+              </div>
             ))}
           </div>
         </CardContent>
