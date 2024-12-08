@@ -93,7 +93,9 @@ export default function ProfileSidebar() {
             {badges.map((badge, index) => (
               <div key={index}>
                 <Badge {...badge} />
-                {index < badges.length - 1 && <Separator className="mb-4" />}
+                {index < badges.length - 1 && (
+                  <Separator className="m-2 w-7/8" />
+                )}
               </div>
             ))}
           </div>

@@ -11,9 +11,7 @@ import DiscoverVolunteers from "~/components/discover-volunteers";
 import { getPosts } from "~/lib/api";
 import { useClerk } from "@clerk/nextjs";
 import { updateUserRecomandationScoreOnScroll } from "~/lib/helpers/updateRecommandationScore";
-import { ThemeSwitcher } from "~/components/theme-switcher";
 import { ChristmasCountdown } from "~/components/christmas-countdown";
-
 
 export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -23,6 +21,7 @@ export default function Component() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
       queryKey: ["posts"],
+      enabled: !!user,
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
         const posts = await getPosts(
@@ -31,7 +30,10 @@ export default function Component() {
           excludedPostIds
         );
 
-        posts.forEach((post) => excludedPostIds.push(post.id));
+        setExcludedPostIds((prev) => [
+          ...prev,
+          ...posts.map((post) => post.id),
+        ]);
 
         return posts.map((post) => ({
           ...post,
