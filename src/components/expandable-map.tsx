@@ -10,7 +10,7 @@ import { Heatmap } from "./heatmap";
 interface ExpandableMapProps {
   apiKey: string;
 }
-
+// a
 function ZoomControls({
   zoom,
   setZoom,
