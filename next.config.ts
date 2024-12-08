@@ -4,7 +4,7 @@ const nextConfig = {
   reactStrictMode: true,
   serverRuntimeConfig: {
     // Will only be available on the server side
-    headersTimeout: 60, // Increase this value (in seconds)
+    headersTimeout: 120, // Increased to 120 seconds (2 minutes)
   },
   experimental: {
     serverActions: {

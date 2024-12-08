@@ -23,6 +23,7 @@ export default function Component() {
       queryKey: ["posts"],
       enabled: !!user,
       initialPageParam: 0,
+      gcTime: 0,
       queryFn: async ({ pageParam }) => {
         const posts = await getPosts(
           pageParam as number,
