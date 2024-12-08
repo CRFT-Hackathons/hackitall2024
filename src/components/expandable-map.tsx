@@ -1,19 +1,25 @@
-"use client"
+"use client";
 
-import { useState, useCallback, useMemo } from 'react'
-import { APIProvider, Map, useMap, MapEvent } from "@vis.gl/react-google-maps"
-import { MapPin, X, ZoomIn, ZoomOut, Flame } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { generateBucharestGeoJSON } from "./utils/generateGeoJSON"
-import { Heatmap } from "./heatmap"
+import { useState, useCallback, useMemo } from "react";
+import { APIProvider, Map, useMap, MapEvent } from "@vis.gl/react-google-maps";
+import { MapPin, X, ZoomIn, ZoomOut, Flame } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { generateBucharestGeoJSON } from "./utils/generateGeoJSON";
+import { Heatmap } from "./heatmap";
 
 interface ExpandableMapProps {
-  apiKey: string
+  apiKey: string;
 }
 
-function ZoomControls({ zoom, setZoom }: { zoom: number; setZoom: (zoom: number) => void }) {
+function ZoomControls({
+  zoom,
+  setZoom,
+}: {
+  zoom: number;
+  setZoom: (zoom: number) => void;
+}) {
   const map = useMap();
-  
+
   const handleZoomIn = useCallback(() => {
     setZoom(zoom + 1);
     if (map) {
@@ -51,15 +57,17 @@ function ZoomControls({ zoom, setZoom }: { zoom: number; setZoom: (zoom: number)
 }
 
 export function ExpandableMap({ apiKey }: ExpandableMapProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [showHeatmap, setShowHeatmap] = useState(true)
-  
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showHeatmap, setShowHeatmap] = useState(true);
+
   // Initial center and zoom for Bucharest
-  const bucharestCoordinates = { lat: 44.4268, lng: 26.1025 }
-  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>(bucharestCoordinates)
+  const bucharestCoordinates = { lat: 44.4268, lng: 26.1025 };
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>(
+    bucharestCoordinates
+  );
   const [zoom, setZoom] = useState(11);
 
-  const heatmapData = useMemo(() => generateBucharestGeoJSON(300), [])
+  const heatmapData = useMemo(() => generateBucharestGeoJSON(300), []);
 
   const handleMapIdle = useCallback((mapInstance: google.maps.Map) => {
     const center = mapInstance.getCenter();
@@ -81,26 +89,24 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
           <span className="sr-only">Open Bucharest Map</span>
         </Button>
       ) : (
-        <div className="fixed inset-0 z-50 bg-transparent flex items-center justify-center">
-          <div className="w-[60%] h-[60%] bg-transparent rounded-lg overflow-hidden flex flex-col relative">
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
+          <div className="w-[80%] h-[80%] bg-transparent rounded-lg overflow-hidden flex flex-col relative">
             <div className="relative flex-grow">
-              <APIProvider apiKey={apiKey} libraries={['visualization']}>
+              <APIProvider apiKey={apiKey} libraries={["visualization"]}>
                 <Map
-                  mapId='hackitall2024'
-                  center={mapCenter}
-                  zoom={zoom}
-                  gestureHandling='greedy'
+                  mapId="hackitall2024"
+                  defaultCenter={mapCenter}
+                  defaultZoom={zoom}
+                  gestureHandling="greedy"
                   disableDefaultUI={true}
                   scrollwheel={true}
                   onIdle={(e: MapEvent<unknown>) => handleMapIdle(e.map)}
-                  onZoomChanged={(e: MapEvent<unknown>) => setZoom(e.map.getZoom() ?? 11)}
+                  onZoomChanged={(e: MapEvent<unknown>) =>
+                    setZoom(e.map.getZoom() ?? 11)
+                  }
                 >
                   {showHeatmap && (
-                    <Heatmap
-                      geojson={heatmapData}
-                      radius={20}
-                      opacity={0.6}
-                    />
+                    <Heatmap geojson={heatmapData} radius={20} opacity={0.6} />
                   )}
                   <ZoomControls zoom={zoom} setZoom={setZoom} />
                 </Map>
@@ -130,6 +136,5 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
         </div>
       )}
     </>
-  )
+  );
 }
-
