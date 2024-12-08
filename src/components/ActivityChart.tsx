@@ -53,8 +53,8 @@ export function ActivityChart() {
       {
         label: 'Contributions',
         data: activityData.map(d => d.contributions),
-        borderColor: 'rgb(147, 51, 234)', // Changed to purple
-        backgroundColor: 'rgba(147, 51, 234, 0.1)', // Changed to purple with opacity
+        borderColor: '#9333ea', // Purple line
+        backgroundColor: 'rgba(147, 51, 234, 0.1)', // Light purple background
         tension: 0.3,
         fill: true,
       },
@@ -69,10 +69,10 @@ export function ActivityChart() {
         display: false,
       },
       tooltip: {
-        backgroundColor: 'hsl(var(--background))',
-        titleColor: 'hsl(var(--foreground))',
-        bodyColor: 'hsl(var(--foreground))',
-        borderColor: 'hsl(var(--border))',
+        backgroundColor: '#9333ea', // Purple background
+        titleColor: '#ffffff', // White text
+        bodyColor: '#ffffff', // White text
+        borderColor: '#9333ea',
         borderWidth: 1,
         padding: 12,
         boxPadding: 4,
