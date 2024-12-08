@@ -67,6 +67,7 @@ export function ChristmasCountdown() {
 
     return () => clearInterval(timer);
   }, []);
+
   useEffect(() => {
     toast({
       title: "A new gift to a child!",
@@ -74,6 +75,7 @@ export function ChristmasCountdown() {
       variant: "success",
     });
   }, [progress]);
+
   useEffect(() => {
     // Simulate progress update
     const interval = setInterval(() => {

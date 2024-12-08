@@ -2,8 +2,14 @@
 
 import { useState, useCallback, useMemo } from "react";
 
-import { APIProvider, Map, useMap, MapEvent, AdvancedMarker } from "@vis.gl/react-google-maps";
-import { MapPin, X, ZoomIn, ZoomOut } from 'lucide-react';
+import {
+  APIProvider,
+  Map,
+  useMap,
+  MapEvent,
+  AdvancedMarker,
+} from "@vis.gl/react-google-maps";
+import { MapPin, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generateBucharestGeoJSON } from "./utils/generateGeoJSON";
 import { Heatmap } from "./heatmap";
@@ -12,7 +18,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface ExpandableMapProps {
   apiKey: string;
 }
-
 
 function ZoomControls({
   zoom,
@@ -26,7 +31,6 @@ function ZoomControls({
   const handleZoomIn = useCallback(() => {
     setZoom(zoom + 1);
     if (map) {
-
       map.setZoom(zoom + 1);
     }
   }, [map, zoom, setZoom]);
@@ -34,7 +38,6 @@ function ZoomControls({
   const handleZoomOut = useCallback(() => {
     setZoom(zoom - 1);
     if (map) {
-
       map.setZoom(zoom - 1);
     }
   }, [map, zoom, setZoom]);
@@ -42,18 +45,18 @@ function ZoomControls({
   return (
     <div className="absolute bottom-4 right-4 z-10 flex flex-col gap-2">
       <Button
-        variant="secondary"
         size="icon"
         onClick={handleZoomIn}
         aria-label="Zoom in"
+        className="transition-all duration-300 border border-border hover:bg-black/80"
       >
         <ZoomIn className="h-4 w-4" />
       </Button>
       <Button
-        variant="secondary"
         size="icon"
         onClick={handleZoomOut}
         aria-label="Zoom out"
+        className="transition-all duration-300 border border-border hover:bg-black/80"
       >
         <ZoomOut className="h-4 w-4" />
       </Button>
@@ -74,26 +77,28 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
   const [zoom, setZoom] = useState(11);
 
   const heatmapData = useMemo(() => generateBucharestGeoJSON(300), []);
-  
+
   const markerPositions = useMemo(() => {
     const features = heatmapData.features;
     const selectedPoints = features.filter((_, index) => index % 2 === 0);
-    return selectedPoints.map(feature => ({
+    return selectedPoints.map((feature) => ({
       lat: feature.geometry.coordinates[1],
       lng: feature.geometry.coordinates[0],
       names: [
-        'UNICEF',
-        'Orphan for Adoption',
-        'Red Cross International',
-        'Microsoft Romania',
-        'Google Romania',
-        'Save the Children',
-        'World Wildlife Fund',
-        'Orange Romania',
-        'Vodafone Foundation',
-        'Greenpeace Romania',
-        'Adobe Romania'
-      ].sort(() => Math.random() - 0.5).slice(0, 1 + Math.floor(Math.random() * 3))
+        "UNICEF",
+        "Orphan for Adoption",
+        "Red Cross International",
+        "Microsoft Romania",
+        "Google Romania",
+        "Save the Children",
+        "World Wildlife Fund",
+        "Orange Romania",
+        "Vodafone Foundation",
+        "Greenpeace Romania",
+        "Adobe Romania",
+      ]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 1 + Math.floor(Math.random() * 3)),
     }));
   }, [heatmapData]);
 
@@ -108,8 +113,10 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
     <>
       <div className="fixed bottom-4 right-4 z-50 group">
         <div className="relative">
-          <div 
-            className={`w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg cursor-pointer transition-all duration-200 ${isExpanded ? 'scale-110' : ''}`}
+          <div
+            className={`w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg cursor-pointer transition-all duration-200 ${
+              isExpanded ? "scale-110" : ""
+            }`}
             onClick={() => setIsExpanded(true)}
           >
             <MapPin className="h-6 w-6 text-white" />
@@ -118,7 +125,10 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
             <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
               <div className="w-[80%] h-[80%] bg-transparent rounded-lg overflow-hidden flex flex-col relative">
                 <div className="relative flex-grow">
-                  <APIProvider apiKey={apiKey} libraries={["visualization", "marker"]}>
+                  <APIProvider
+                    apiKey={apiKey}
+                    libraries={["visualization", "marker"]}
+                  >
                     <Map
                       mapId="hackitall2024"
                       center={mapCenter}
@@ -132,12 +142,23 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                       }
                     >
                       <div className="absolute top-2 left-2 z-10">
-                        <Tabs defaultValue={showHeatmap ? "heatmap" : "markers"} onValueChange={(value) => setShowHeatmap(value === "heatmap")}>
+                        <Tabs
+                          defaultValue={showHeatmap ? "heatmap" : "markers"}
+                          onValueChange={(value) =>
+                            setShowHeatmap(value === "heatmap")
+                          }
+                        >
                           <TabsList className="grid w-full grid-cols-2 bg-white/90 backdrop-blur-sm">
-                            <TabsTrigger value="heatmap" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300">
+                            <TabsTrigger
+                              value="heatmap"
+                              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
+                            >
                               Heatmap
                             </TabsTrigger>
-                            <TabsTrigger value="markers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300">
+                            <TabsTrigger
+                              value="markers"
+                              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
+                            >
                               Markers
                             </TabsTrigger>
                           </TabsList>
@@ -145,7 +166,11 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                       </div>
 
                       {showHeatmap ? (
-                        <Heatmap geojson={heatmapData} radius={20} opacity={0.6} />
+                        <Heatmap
+                          geojson={heatmapData}
+                          radius={20}
+                          opacity={0.6}
+                        />
                       ) : (
                         markerPositions.map((position, index) => (
                           <AdvancedMarker
