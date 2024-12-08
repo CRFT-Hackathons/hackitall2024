@@ -46,17 +46,17 @@ export async function getPosts(
     .orderBy(
       sql`ABS(${currentRecomandationScore} - 
         CASE 
-          WHEN ${posts.category} = 'food_support' THEN 1
-          WHEN ${posts.category} = 'medical_aid' THEN 2
-          WHEN ${posts.category} = 'education' THEN 3
-          WHEN ${posts.category} = 'housing_support' THEN 4
-          WHEN ${posts.category} = 'emotional_support' THEN 5
-          WHEN ${posts.category} = 'elderly_care' THEN 6
-          WHEN ${posts.category} = 'child_care' THEN 7
-          WHEN ${posts.category} = 'disaster_relief' THEN 8
-          WHEN ${posts.category} = 'job_training' THEN 9
-          WHEN ${posts.category} = 'environmental_protection' THEN 10
-          ELSE 0
+          WHEN ${posts.category} = 'food_support' THEN 1.0
+          WHEN ${posts.category} = 'medical_aid' THEN 2.0
+          WHEN ${posts.category} = 'education' THEN 3.0
+          WHEN ${posts.category} = 'housing_support' THEN 4.0
+          WHEN ${posts.category} = 'emotional_support' THEN 5.0
+          WHEN ${posts.category} = 'elderly_care' THEN 6.0
+          WHEN ${posts.category} = 'child_care' THEN 7.0
+          WHEN ${posts.category} = 'disaster_relief' THEN 8.0
+          WHEN ${posts.category} = 'job_training' THEN 9.0
+          WHEN ${posts.category} = 'environmental_protection' THEN 10.0
+          ELSE 0.0
         END
       )`
     ) // Order by absolute difference

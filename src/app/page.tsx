@@ -11,18 +11,19 @@ import DiscoverVolunteers from "~/components/discover-volunteers";
 import { getPosts } from "~/lib/api";
 import { useClerk } from "@clerk/nextjs";
 import { updateUserRecomandationScoreOnScroll } from "~/lib/helpers/updateRecommandationScore";
-import { ThemeSwitcher } from "~/components/theme-switcher";
-
 export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
   const { user } = useClerk();
   const excludedPostIds = [1, 2, 3];
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
+      enabled: !!user,
       queryKey: ["posts"],
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
+        console.log(user?.id); // this returns undefinied
         const posts = await getPosts(
           pageParam as number,
           user?.id as string,
