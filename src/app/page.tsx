@@ -1,7 +1,7 @@
 "use client";
 
 import { ExpandableMap } from "~/components/expandable-map";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
 import FeedCard, { FeedCardProps } from "@/components/feedcard";
@@ -11,18 +11,26 @@ import DiscoverVolunteers from "~/components/discover-volunteers";
 import { getPosts } from "~/lib/api";
 import { useClerk } from "@clerk/nextjs";
 import { updateUserRecomandationScoreOnScroll } from "~/lib/helpers/updateRecommandationScore";
-import { ThemeSwitcher } from "~/components/theme-switcher";
-
 export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
   const { user } = useClerk();
+  const [excludedPostIds, setExcludedPostIds] = useState<number[]>([]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
+      enabled: !!user,
       queryKey: ["posts"],
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
-        const posts = await getPosts(pageParam as number);
+        console.log(user?.id); // this returns undefinied
+        const posts = await getPosts(
+          pageParam as number,
+          user?.id as string,
+          excludedPostIds
+        );
+
+        posts.forEach((post) => excludedPostIds.push(post.id));
+
         return posts.map((post) => ({
           ...post,
           id: post.id.toString(),
@@ -77,7 +85,7 @@ export default function Component() {
       <div className="mt-12" />
       {/* <ThemeSwitcher /> */}
 
-      <div className="grid grid-cols-3 gap-8 p-8 place-content-center">
+      <div className="grid grid-cols-3 gap-8 p-8 place-content-center max-w-7xl">
         <div className="hidden sm:flex place-content-end">
           <ProfileSidebar />
         </div>

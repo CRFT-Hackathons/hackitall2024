@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+
 import { APIProvider, Map, useMap, MapEvent, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { MapPin, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface ExpandableMapProps {
   apiKey: string;
 }
+
 
 function ZoomControls({
   zoom,
@@ -24,6 +26,7 @@ function ZoomControls({
   const handleZoomIn = useCallback(() => {
     setZoom(zoom + 1);
     if (map) {
+
       map.setZoom(zoom + 1);
     }
   }, [map, zoom, setZoom]);
@@ -31,6 +34,7 @@ function ZoomControls({
   const handleZoomOut = useCallback(() => {
     setZoom(zoom - 1);
     if (map) {
+
       map.setZoom(zoom - 1);
     }
   }, [map, zoom, setZoom]);
@@ -60,6 +64,7 @@ function ZoomControls({
 export function ExpandableMap({ apiKey }: ExpandableMapProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showHeatmap, setShowHeatmap] = useState(true);
+
   const [hoveredMarker, setHoveredMarker] = useState<number | null>(null);
 
   const bucharestCoordinates = { lat: 44.4268, lng: 26.1025 };

@@ -134,7 +134,7 @@ export default function FeedCard({
               </Avatar>
             </div>
             <div className="ml-4">
-              <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+              <h2 className="text-md font-semibold text-foreground">{title}</h2>
               <p className="text-sm text-muted-foreground font-medium">
                 {category
                   .split("_")
@@ -149,7 +149,9 @@ export default function FeedCard({
           <div className="mb-2 px-4">
             <p
               ref={descriptionRef}
-              className={`text-foreground ${!isExpanded && "line-clamp-3"}`}
+              className={`text-foreground ${
+                !isExpanded && "line-clamp-3"
+              } text-sm`}
             >
               {description}
             </p>

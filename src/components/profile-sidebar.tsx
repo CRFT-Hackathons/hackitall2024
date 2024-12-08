@@ -3,26 +3,64 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bookmark, Users, Newspaper, Calendar, Crown } from "lucide-react";
+import {
+  Bookmark,
+  Users,
+  Newspaper,
+  Calendar,
+  Crown,
+  Award,
+  Shield,
+  Clock,
+} from "lucide-react";
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
-import NextImage from "next/image";
 
-import month3badge from "../../public/icons8-discord-bug-hunter-badge.svg";
-
-import firstJob from "../../public/boost6month.svg";
-
-import verified from "../../public/icons8-discord-hypesquad-events-badge.svg";
+function Badge({ icon: Icon, title, description, color }) {
+  return (
+    <div className="flex items-start space-x-4 p-4 rounded-lg transition-all duration-200 dark:hover:bg-white/5 bg-black/5">
+      <div className={`p-2 rounded-full ${color}`}>
+        <Icon className="h-5 w-5 text-white" />
+      </div>
+      <div className="space-y-1">
+        <h3 className="text-sm font-medium">{title}</h3>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function ProfileSidebar() {
   const { user } = useClerk();
+
+  const badges = [
+    {
+      icon: Award,
+      title: "First Job Completed",
+      description: "Successfully completed first volunteering task",
+      color: "bg-blue-500",
+    },
+    {
+      icon: Shield,
+      title: "Verified Member",
+      description: "Identity verified and trusted member",
+      color: "bg-green-500",
+    },
+    {
+      icon: Clock,
+      title: "3 Months Active",
+      description: "Consistently active for 3 months",
+      color: "bg-purple-500",
+    },
+  ];
+
   return (
     <div className="w-[256px] flex flex-col gap-4">
       {/* Profile Card */}
       <Card>
         <CardContent className="p-0">
           <div className="relative">
-            <div className="h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-lg" />
+            <div className="h-24 bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-lg" />
             <div className="absolute -bottom-6 left-4">
               <Avatar className="h-16 w-16 border-4 border-white dark:border-[#1A191B]">
                 <AvatarImage src={user?.imageUrl} alt="Profile picture" />
@@ -30,33 +68,22 @@ export default function ProfileSidebar() {
               </Avatar>
             </div>
           </div>
-          <div className="p-4 pt-8">
+          <div className="px-4 pt-8 pb-4">
             <h2 className="text-xl font-semibold">{user?.fullName}</h2>
             <p className="text-sm text-muted-foreground">Volunteer</p>
             <p className="text-sm text-muted-foreground">Bucharest, RO</p>
           </div>
-          <div className="badges-holder w-[100%] h-[70px]  flex flex-row gap-0 justify-evenly">
-            <NextImage
-              className="w-[20%] h-full object-contain transform scale-80 transition-transform duration-300 hover:scale-100"
-              src={firstJob}
-              alt="First Job Completed"
-              width={100}
-              height={100}
-            />
-            <NextImage
-              className="w-[20%] h-full object-contain transform scale-80 transition-transform duration-300 hover:scale-100"
-              src={verified}
-              alt="Verified User"
-              width={100}
-              height={100}
-            />
-            <NextImage
-              className="w-[20%] h-full object-contain transform scale-80 transition-transform duration-300 hover:scale-100"
-              src={month3badge}
-              alt="3 Mounth of Activity"
-              width={100}
-              height={100}
-            />
+        </CardContent>
+      </Card>
+
+      {/* Badges Card */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="text-sm font-semibold mb-2">Achievements</h3>
+          <div className="space-y-2">
+            {badges.map((badge, index) => (
+              <Badge key={index} {...badge} />
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -103,28 +130,28 @@ export default function ProfileSidebar() {
           <nav className="space-y-2">
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-gray-100 dark:hover:bg-white/5"
+              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
             >
               <Bookmark className="h-5 w-5" />
               Saved posts
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-gray-100 dark:hover:bg-white/5"
+              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
             >
               <Users className="h-5 w-5" />
               Groups
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-gray-100 dark:hover:bg-white/5"
+              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
             >
               <Newspaper className="h-5 w-5" />
               Newsletters
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-gray-100 dark:hover:bg-white/5"
+              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
             >
               <Calendar className="h-5 w-5" />
               Events
