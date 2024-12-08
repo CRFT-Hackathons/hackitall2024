@@ -30,18 +30,21 @@ export async function getPosts(
   const pageSize = 5;
   const offset = page * pageSize;
 
-  const currentRecomandationScore = await db
+  const userData = await db
     .select({ recommand_score: users.recommand_score })
     .from(users)
     .where(eq(users.id, userId))
     .then((rows) => rows[0]?.recommand_score || 0);
 
-    const fetchedPosts = await db
+  const currentRecomandationScore: number = userData as number;
+  const fetchedPosts = await db
     .select()
     .from(posts)
     .where(
       // Use notInArray for excluding posts
-      excludedPostIds.length > 0 ? notInArray(posts.id, excludedPostIds) : undefined
+      excludedPostIds.length > 0
+        ? notInArray(posts.id, excludedPostIds)
+        : undefined
     ) // Exclude posts by IDs
     .orderBy(
       sql`ABS(${currentRecomandationScore} - 

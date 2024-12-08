@@ -1,7 +1,7 @@
 "use client";
 
 import { ExpandableMap } from "~/components/expandable-map";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
 import FeedCard, { FeedCardProps } from "@/components/feedcard";
@@ -15,8 +15,7 @@ export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
   const { user } = useClerk();
-  const excludedPostIds = [1, 2, 3];
-
+  const [excludedPostIds, setExcludedPostIds] = useState<number[]>([]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
       enabled: !!user,
@@ -29,6 +28,9 @@ export default function Component() {
           user?.id as string,
           excludedPostIds
         );
+
+        posts.forEach((post) => excludedPostIds.push(post.id));
+
         return posts.map((post) => ({
           ...post,
           id: post.id.toString(),
