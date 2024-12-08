@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { toast, useToast } from "~/hooks/use-toast";
+import { toast } from "~/hooks/use-toast";
 
 export function ChristmasCountdown() {
   const [progress, setProgress] = useState(512);
@@ -22,7 +22,7 @@ export function ChristmasCountdown() {
       const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((difference / 1000 / 60) % 60);
 
-      setTimeLeft(`${days}d ${hours}h ${minutes}m until Christmas`);
+      setTimeLeft(`${days}d ${hours}h ${minutes}m until Christmas 🎅`);
     };
 
     updateTimer();
@@ -34,7 +34,7 @@ export function ChristmasCountdown() {
     toast({
       title: "A new gift to a child!",
       description: "You can make the christmas of a needy child better!",
-      variant: "success",
+      // variant: "success",
     });
   }, [progress]);
   useEffect(() => {
@@ -47,18 +47,27 @@ export function ChristmasCountdown() {
   }, []);
 
   return (
-    <div className="bg-card text-card-foreground rounded-lg shadow-md p-4 flex flex-col gap-3">
+    <div
+      style={{
+        background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://cdn.hswstatic.com/gif/volunteer-christmas-2.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      className="text-white text-card-foreground rounded-lg shadow-md p-4 flex flex-col gap-3 border border-border relative"
+    >
       <div className="flex justify-between items-center">
-        <h2 className="text-md font-bold">Bring joy to kids this Christmas</h2>
+        <h2 className="text-md font-bold">
+          🎄 Bring joy to kids this Christmas
+        </h2>
         <Button
           onClick={() => {
             setProgress((prog) => prog + 1);
           }}
-          variant="outline"
+          variant="default"
           size="sm"
-          className="h-8 px-3 py-1"
+          className="h-8 px-3 py-1 font-bold hover:bg-black hover:text-white focus:scale-105 ease-in-out transition-transform dark:bg-white dark:text-black"
         >
-          Help Now
+          Help Now 🎁
         </Button>
       </div>
       <div className="flex items-center space-x-3">
@@ -69,9 +78,7 @@ export function ChristmasCountdown() {
           {progress}/1000 gifts
         </span>
       </div>
-      <div className="text-sm font-bold text-muted-foreground text-center">
-        {timeLeft}
-      </div>
+      <div className="text-sm font-bold text-white text-center">{timeLeft}</div>
     </div>
   );
 }

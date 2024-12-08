@@ -103,7 +103,7 @@ export default function ProfileSidebar() {
             <div className="flex justify-between">
               <span className="text-sm">Volunteered for</span>
               <span className="text-sm font-semibold text-blue-600">
-                17 people
+                187 people
               </span>
             </div>
             <Link
