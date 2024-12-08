@@ -20,6 +20,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { createAvatar } from "@dicebear/core";
 import { notionistsNeutral } from "@dicebear/collection";
+import { motion } from "framer-motion";
+import { AnimatedIcon } from "@/components/AnimatedIcon";
+import { FloatingParticles } from "@/components/FloatingParticles";
 
 export interface FeedCardProps {
   id: string;
@@ -66,8 +69,9 @@ export default function FeedCard({
   const [volunteersCount, setVolunteersCount] = useState(0);
   const [offered, setOffered] = useState(false);
   const [repostCount, setRepostCount] = useState(0);
-  const [justClickedLike, setJustClickedLike] = useState(false);
-  const [justClickedOffer, setJustClickedOffer] = useState(false);
+  const [showLikeParticles, setShowLikeParticles] = useState<boolean>(false);
+  const [showVolunteerParticles, setShowVolunteerParticles] =
+    useState<boolean>(false);
 
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const isOverflowing = useIsOverflowing(descriptionRef, 3);
@@ -100,33 +104,26 @@ export default function FeedCard({
   }, []);
 
   const handleLikeClick = () => {
-    if (!liked) {
-      setLikesCount(likesCount + 1);
-      setLiked(true);
-    } else {
-      setLikesCount(likesCount - 1);
-      setLiked(false);
-    }
-    // Trigger a short scale animation
-    setJustClickedLike(true);
-    setTimeout(() => setJustClickedLike(false), 300);
+    setLikesCount(liked ? likesCount - 1 : likesCount + 1);
+    setLiked(!liked);
+    setShowLikeParticles(true);
+    setTimeout(() => setShowLikeParticles(false), 1000);
   };
 
-  const handleOfferClick = () => {
-    if (!offered) {
-      setVolunteersCount(volunteersCount + 1);
-      setOffered(true);
-    } else {
-      setVolunteersCount(volunteersCount - 1);
-      setOffered(false);
-    }
-    // Trigger a short scale animation
-    setJustClickedOffer(true);
-    setTimeout(() => setJustClickedOffer(false), 300);
+  const handleVolunteerClick = () => {
+    setVolunteersCount(offered ? volunteersCount - 1 : volunteersCount + 1);
+    setOffered(!offered);
+    setShowVolunteerParticles(true);
+    setTimeout(() => setShowVolunteerParticles(false), 1000);
   };
 
   return (
-    <div className="min-w-96">
+    <motion.div
+      className="min-w-96"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="bg-card text-card-foreground shadow-sm border border-border rounded-md overflow-hidden">
         <div>
           <div className="flex items-center mb-4 p-4 pb-0">
@@ -227,7 +224,6 @@ export default function FeedCard({
             }`}
             onClick={async () => {
               type Category = keyof typeof categoryMap;
-
               await updateUserRecomandationScoreOnLike(
                 user?.id as string,
                 categoryMap[category as Category]
@@ -236,7 +232,14 @@ export default function FeedCard({
               setLiked(!liked);
             }}
           >
-            <ThumbsUp className="h-6 w-6 scale-x-[-1]" />
+            <AnimatedIcon
+              icon={<ThumbsUp className="h-6 w-6 scale-x-[-1]" />}
+              isActive={liked}
+              onClick={handleLikeClick}
+              activeColor="text-blue-500"
+              className="w-full"
+            />
+            <FloatingParticles isVisible={showLikeParticles} color="#3B82F6" />
           </button>
           <button
             className={`flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md ${
@@ -254,7 +257,17 @@ export default function FeedCard({
               setOffered(!offered);
             }}
           >
-            <HeartHandshake className="h-6 w-6" />
+            <AnimatedIcon
+              icon={<HeartHandshake className="h-6 w-6" />}
+              isActive={offered}
+              onClick={handleVolunteerClick}
+              activeColor="text-red-500"
+              className="w-full"
+            />
+            <FloatingParticles
+              isVisible={showVolunteerParticles}
+              color="#EF4444"
+            />
           </button>
           <button className="flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md transition-transform duration-300 ease-in-out">
             <MessageSquare className="h-6 w-6" />
@@ -264,6 +277,6 @@ export default function FeedCard({
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
