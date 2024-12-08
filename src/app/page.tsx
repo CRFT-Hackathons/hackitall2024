@@ -12,6 +12,9 @@ import { getPosts } from "~/lib/api";
 import { useClerk } from "@clerk/nextjs";
 import { updateUserRecomandationScoreOnScroll } from "~/lib/helpers/updateRecommandationScore";
 import { ThemeSwitcher } from "~/components/theme-switcher";
+import { ChristmasCountdown } from "~/components/christmas-countdown";
+
+
 export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
@@ -19,11 +22,9 @@ export default function Component() {
   const [excludedPostIds, setExcludedPostIds] = useState<number[]>([]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
-      enabled: !!user,
       queryKey: ["posts"],
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
-        console.log(user?.id); // this returns undefinied
         const posts = await getPosts(
           pageParam as number,
           user?.id as string,
@@ -91,6 +92,7 @@ export default function Component() {
         </div>
         <div className="flex flex-col gap-4 col-span-3 sm:col-span-2 lgxl:col-span-1">
           <CreatePost />
+          <ChristmasCountdown />
           <div className="flex flex-col gap-4">
             {status === "pending" && <div>Loading...</div>}
             {status === "error" && <div>Error fetching posts</div>}

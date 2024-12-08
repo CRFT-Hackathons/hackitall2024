@@ -1,6 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes candycane {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 32px 0, 32px 0;
+  }
+}
 
 @layer base {
   :root {
@@ -134,7 +142,7 @@
 
     --ui-shadow: var(--surface-7);
   }
-  
+
   .dark {
     --background: 240deg, 5.56%, 7.06%; /* #111113 */
     --foreground: 258deg, 6.94%, 71.8%; /* #b5b2bc */
