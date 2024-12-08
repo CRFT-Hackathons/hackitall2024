@@ -37,21 +37,21 @@ export default function ProfileSidebar() {
           </div>
           <div className="badges-holder w-[100%] h-[70px]  flex flex-row gap-0 justify-evenly">
             <NextImage
-              className="w-[20%] h-full object-contain transform scale-80 transition-transform duration-300 hover:scale-100"
+              className="w-[20%] h-full object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
               src={firstJob}
               alt="First Job Completed"
               width={100}
               height={100}
             />
             <NextImage
-              className="w-[20%] h-full object-contain transform scale-80 transition-transform duration-300 hover:scale-100"
+              className="w-[20%] h-full object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
               src={verified}
               alt="Verified User"
               width={100}
               height={100}
             />
             <NextImage
-              className="w-[20%] h-full object-contain transform scale-80 transition-transform duration-300 hover:scale-100"
+              className="w-[20%] h-full object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
               src={month3badge}
               alt="3 Mounth of Activity"
               width={100}

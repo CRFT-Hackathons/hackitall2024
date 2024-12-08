@@ -17,12 +17,17 @@ export default function Component() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
   const { user } = useClerk();
+  const excludedPostIds = [1, 2, 3];
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
       queryKey: ["posts"],
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
-        const posts = await getPosts(pageParam as number);
+        const posts = await getPosts(
+          pageParam as number,
+          user?.id as string,
+          excludedPostIds
+        );
         return posts.map((post) => ({
           ...post,
           id: post.id.toString(),
