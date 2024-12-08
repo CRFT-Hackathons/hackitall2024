@@ -1,5 +1,6 @@
 "use client";
 
+import { ExpandableMap } from "~/components/expandable-map";
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
@@ -22,14 +23,12 @@ export default function Component() {
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
         const posts = await getPosts(pageParam as number);
-        // console.log(posts); // Check if there are unexpected fields
-
         return posts.map((post) => ({
           ...post,
-          id: post.id.toString(), // Ensure it's a string
-          registrationStart: post.registrationStart.toISOString(), // Convert Date to string
-          registrationEnd: post.registrationEnd.toISOString(), // Convert Date to string
-          requiredPeople: post.requiredPeople ?? undefined, // Avoid passing undefined explicitly
+          id: post.id.toString(),
+          registrationStart: post.registrationStart.toISOString(),
+          registrationEnd: post.registrationEnd.toISOString(),
+          requiredPeople: post.requiredPeople ?? undefined,
         }));
       },
       getNextPageParam: (lastPage, allPages) =>
@@ -73,7 +72,7 @@ export default function Component() {
   }, [data]);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center gap-2">
+    <div className="w-full min-h-screen flex flex-col items-center gap-2 relative">
       <Navbar />
       <div className="mt-12" />
       {/* <ThemeSwitcher /> */}
@@ -112,6 +111,8 @@ export default function Component() {
           <DiscoverVolunteers />
         </div>
       </div>
+
+      <ExpandableMap apiKey="AIzaSyDZzn4QXRdUAVXnRxfXXroa4E2ThsONiJM" />
     </div>
   );
 }
