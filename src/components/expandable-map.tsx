@@ -11,20 +11,22 @@ interface ExpandableMapProps {
   apiKey: string
 }
 
-function ZoomControls() {
-  const map = useMap()
+function ZoomControls({ zoom, setZoom }: { zoom: number; setZoom: (zoom: number) => void }) {
+  const map = useMap();
   
   const handleZoomIn = useCallback(() => {
+    setZoom(zoom + 1);
     if (map) {
-      map.setZoom((map.getZoom() || 0) + 1)
+      map.setZoom(zoom + 1);
     }
-  }, [map])
+  }, [map, zoom, setZoom]);
 
   const handleZoomOut = useCallback(() => {
+    setZoom(zoom - 1);
     if (map) {
-      map.setZoom((map.getZoom() || 0) - 1)
+      map.setZoom(zoom - 1);
     }
-  }, [map])
+  }, [map, zoom, setZoom]);
 
   return (
     <div className="absolute bottom-4 right-4 z-10 flex flex-col gap-2">
@@ -45,7 +47,7 @@ function ZoomControls() {
         <ZoomOut className="h-4 w-4" />
       </Button>
     </div>
-  )
+  );
 }
 
 export function ExpandableMap({ apiKey }: ExpandableMapProps) {
@@ -55,18 +57,16 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
   // Initial center and zoom for Bucharest
   const bucharestCoordinates = { lat: 44.4268, lng: 26.1025 }
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>(bucharestCoordinates)
-  const [mapZoom, setMapZoom] = useState<number>(11)
+  const [zoom, setZoom] = useState(11);
 
   const heatmapData = useMemo(() => generateBucharestGeoJSON(300), [])
 
   const handleMapIdle = useCallback((mapInstance: google.maps.Map) => {
-    const center = mapInstance.getCenter()
-    const zoom = mapInstance.getZoom()
-    if (center && zoom !== null) {
-      setMapCenter({ lat: center.lat(), lng: center.lng() })
-      setMapZoom(zoom ?? 11)
+    const center = mapInstance.getCenter();
+    if (center) {
+      setMapCenter({ lat: center.lat(), lng: center.lng() });
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -88,11 +88,12 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                 <Map
                   mapId='hackitall2024'
                   center={mapCenter}
-                  zoom={mapZoom}
+                  zoom={zoom}
                   gestureHandling='greedy'
                   disableDefaultUI={true}
                   scrollwheel={true}
                   onIdle={(e: MapEvent<unknown>) => handleMapIdle(e.map)}
+                  onZoomChanged={(e: MapEvent<unknown>) => setZoom(e.map.getZoom() ?? 11)}
                 >
                   {showHeatmap && (
                     <Heatmap
@@ -101,7 +102,7 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
                       opacity={0.6}
                     />
                   )}
-                  <ZoomControls />
+                  <ZoomControls zoom={zoom} setZoom={setZoom} />
                 </Map>
               </APIProvider>
             </div>
@@ -131,3 +132,4 @@ export function ExpandableMap({ apiKey }: ExpandableMapProps) {
     </>
   )
 }
+
