@@ -84,7 +84,7 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] border border-border">
         <DialogHeader>
           <DialogTitle>Create Event Post</DialogTitle>
         </DialogHeader>
@@ -142,7 +142,13 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
                   variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    !registrationStartDate && "text-muted-foreground"
+                    !registrationEndDate && "text-muted-foreground",
+                    "border",
+                    "border-border",
+                    "dark:hover:bg-white/5",
+                    "dark:hover:text-white",
+                    "hover:text-black",
+                    "hover:bg-black/5"
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
@@ -171,7 +177,13 @@ export function CreateEventPostModal({ trigger }: CreateEventPostModalProps) {
                   variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    !registrationEndDate && "text-muted-foreground"
+                    !registrationEndDate && "text-muted-foreground",
+                    "border",
+                    "border-border",
+                    "dark:hover:bg-white/5",
+                    "dark:hover:text-white",
+                    "hover:text-black",
+                    "hover:bg-black/5"
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />

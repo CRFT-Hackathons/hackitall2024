@@ -128,8 +128,12 @@ export default function FeedCard({
         <div>
           <div className="flex items-center mb-4 p-4 pb-0">
             <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={avatar} alt="User avatar" />
+              <Avatar className="h-12 w-12 aspect-square">
+                <AvatarImage
+                  src={avatar}
+                  alt="User avatar"
+                  className="aspect-square"
+                />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
             </div>

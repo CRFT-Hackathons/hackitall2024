@@ -24,7 +24,7 @@ export function CreatePost() {
           trigger={
             <Button
               variant="outline"
-              className="w-full justify-start text-gray-500 font-normal rounded-full p-6 hover:bg-black/5 hover:text-black dark:hover:bg-background dark:hover:text-gray-400"
+              className="w-full justify-start text-gray-500 font-normal rounded-full p-6 hover:bg-black/5 hover:text-black dark:hover:bg-background dark:hover:text-gray-400 border-black/40"
             >
               Start a post
             </Button>

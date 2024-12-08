@@ -15,8 +15,16 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
+import { ThemeSwitcher } from "./theme-switcher";
 
-function Badge({ icon: Icon, title, description, color }) {
+interface BadgeProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  color: string;
+}
+
+function Badge({ icon: Icon, title, description, color }: BadgeProps) {
   return (
     <div className="flex items-start space-x-4 p-4 rounded-lg transition-all duration-200 dark:hover:bg-white/5 bg-black/5">
       <div className={`p-2 rounded-full ${color}`}>
@@ -130,28 +138,28 @@ export default function ProfileSidebar() {
           <nav className="space-y-2">
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
+              className="flex items-center gap-3 rounded-md p-2 text-sm dark:hover:bg-white/5 hover:bg-black/5"
             >
               <Bookmark className="h-5 w-5" />
               Saved posts
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
+              className="flex items-center gap-3 rounded-md p-2 text-sm dark:hover:bg-white/5 hover:bg-black/5"
             >
               <Users className="h-5 w-5" />
               Groups
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
+              className="flex items-center gap-3 rounded-md p-2 text-sm dark:hover:bg-white/5 hover:bg-black/5"
             >
               <Newspaper className="h-5 w-5" />
               Newsletters
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-md p-2 text-sm hover:bg-accent"
+              className="flex items-center gap-3 rounded-md p-2 text-sm dark:hover:bg-white/5 hover:bg-black/5"
             >
               <Calendar className="h-5 w-5" />
               Events
@@ -159,6 +167,7 @@ export default function ProfileSidebar() {
           </nav>
         </CardContent>
       </Card>
+      <ThemeSwitcher />
     </div>
   );
 }

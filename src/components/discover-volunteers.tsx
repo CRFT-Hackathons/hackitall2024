@@ -36,7 +36,7 @@ export default function DiscoverVolunteers() {
               </p>
             </div>
           </div>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full border-border shadow">
             Follow
           </Button>
         </div>
@@ -57,7 +57,7 @@ export default function DiscoverVolunteers() {
               </p>
             </div>
           </div>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full border-border shadow">
             Connect
           </Button>
         </div>
@@ -80,7 +80,7 @@ export default function DiscoverVolunteers() {
               </p>
             </div>
           </div>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full border-border shadow">
             Follow
           </Button>
         </div>

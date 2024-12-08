@@ -1,41 +1,42 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Navbar } from "@/components/navbar"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Navbar } from "@/components/navbar";
 
 interface Message {
-  id: number
-  sender: string
-  content: string
-  timestamp: string
-  avatar: string
+  id: number;
+  sender: string;
+  content: string;
+  timestamp: string;
+  avatar: string;
 }
 
 export default function Page() {
   const [messages] = useState<Message[]>([
     {
       id: 1,
-      sender: "John Doe",
-      content: "Hey, how are you?",
+      sender: "Petrisor Huzum",
+      content: "Hello, I would love to help you with your groceries.",
       timestamp: "2 hours ago",
-      avatar: "https://github.com/shadcn.png"
+      avatar: "",
     },
     {
-      id: 2, 
-      sender: "Jane Smith",
-      content: "Would you like to connect?",
+      id: 2,
+      sender: "Marian Popescu",
+      content:
+        "Hi. I see that you would be interested in giving a hand to the local library. I am the librarian and I would be happy to discuss this with you.",
       timestamp: "1 day ago",
-      avatar: "https://github.com/shadcn.png"
-    }
-  ])
+      avatar: "",
+    },
+  ]);
 
-  const [newMessage, setNewMessage] = useState('')
+  const [newMessage, setNewMessage] = useState("");
 
   return (
     <>
@@ -48,7 +49,10 @@ export default function Page() {
             <Input placeholder="Search messages..." className="mb-4" />
             <ScrollArea className="h-[calc(100vh-140px)]">
               {messages.map((message) => (
-                <div key={message.id} className="p-4 hover:bg-gray-100 cursor-pointer">
+                <div
+                  key={message.id}
+                  className="p-4 hover:bg-gray-100 cursor-pointer"
+                >
                   <div className="flex items-center space-x-4">
                     <Avatar>
                       <AvatarImage src={message.avatar} />
@@ -57,9 +61,13 @@ export default function Page() {
                     <div className="flex-1">
                       <div className="flex justify-between">
                         <h3 className="font-semibold">{message.sender}</h3>
-                        <span className="text-sm text-gray-500">{message.timestamp}</span>
+                        <span className="text-sm text-gray-500">
+                          {message.timestamp}
+                        </span>
                       </div>
-                      <p className="text-sm text-gray-600 truncate">{message.content}</p>
+                      <p className="text-sm text-gray-600 truncate">
+                        {message.content}
+                      </p>
                     </div>
                   </div>
                   <Separator className="mt-4" />
@@ -87,7 +95,10 @@ export default function Page() {
             <CardContent>
               <ScrollArea className="h-[calc(100vh-280px)] p-4">
                 {messages.map((message) => (
-                  <div key={message.id} className="flex items-start space-x-4 mb-4">
+                  <div
+                    key={message.id}
+                    className="flex items-start space-x-4 mb-4"
+                  >
                     <Avatar>
                       <AvatarImage src={message.avatar} />
                       <AvatarFallback>{message.sender[0]}</AvatarFallback>
@@ -95,7 +106,9 @@ export default function Page() {
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
                         <h3 className="font-semibold">{message.sender}</h3>
-                        <span className="text-sm text-gray-500">{message.timestamp}</span>
+                        <span className="text-sm text-gray-500">
+                          {message.timestamp}
+                        </span>
                       </div>
                       <p className="text-gray-600">{message.content}</p>
                     </div>
@@ -104,7 +117,7 @@ export default function Page() {
               </ScrollArea>
             </CardContent>
           </Card>
-          
+
           {/* Message input */}
           <div className="p-4 border-t">
             <div className="flex space-x-2">
@@ -120,5 +133,5 @@ export default function Page() {
         </div>
       </div>
     </>
-  )
+  );
 }
