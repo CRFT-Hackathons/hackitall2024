@@ -2,14 +2,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import {
-  User,
   ThumbsUp,
   MessageSquare,
   HeartHandshake,
   Send,
   Dot,
   Users,
-  CalendarDays,
 } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import { useClerk } from "@clerk/nextjs";
@@ -127,12 +125,12 @@ export default function FeedCard({
       <div className="bg-card text-card-foreground shadow-sm border border-border rounded-md overflow-hidden">
         <div>
           <div className="flex items-center mb-4 p-4 pb-0">
-            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+            <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden aspect-square">
               <Avatar className="h-12 w-12 aspect-square">
                 <AvatarImage
                   src={avatar}
                   alt="User avatar"
-                  className="aspect-square"
+                  className="aspect-square w-12 h-12"
                 />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>

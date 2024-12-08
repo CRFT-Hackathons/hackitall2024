@@ -5,9 +5,46 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "~/hooks/use-toast";
 
+import confetti from "canvas-confetti";
+
 export function ChristmasCountdown() {
   const [progress, setProgress] = useState(512);
   const [timeLeft, setTimeLeft] = useState("");
+
+  const handleClick = (event: React.MouseEvent) => {
+    const defaults = {
+      spread: 360,
+      ticks: 50,
+      gravity: 0,
+      decay: 0.94,
+      startVelocity: 30,
+      colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"],
+      origin: {
+        x: event.clientX / window.innerWidth,
+        y: event.clientY / window.innerHeight,
+      },
+    };
+
+    const shoot = () => {
+      confetti({
+        ...defaults,
+        particleCount: 40,
+        scalar: 1,
+        shapes: ["star"],
+      });
+
+      confetti({
+        ...defaults,
+        particleCount: 10,
+        scalar: 0.55,
+        shapes: ["circle"],
+      });
+    };
+
+    setTimeout(shoot, 0);
+    setTimeout(shoot, 200);
+    setTimeout(shoot, 400);
+  };
 
   useEffect(() => {
     const updateTimer = () => {
@@ -55,13 +92,14 @@ export function ChristmasCountdown() {
       }}
       className="text-white text-card-foreground rounded-lg shadow-md p-4 flex flex-col gap-3 border border-border relative"
     >
-      <div className="flex justify-between items-center">
+      <div className="relative flex justify-between items-center">
         <h2 className="text-md font-bold">
           🎄 Bring joy to kids this Christmas
         </h2>
         <Button
-          onClick={() => {
+          onClick={(e) => {
             setProgress((prog) => prog + 1);
+            handleClick(e);
           }}
           variant="default"
           size="sm"

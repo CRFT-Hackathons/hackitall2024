@@ -8,6 +8,7 @@ import { Navbar } from "@/components/navbar";
 import { useUser } from "@clerk/nextjs";
 import { ActivityChart } from "@/components/ActivityChart";
 import GitHubCalendar from "react-github-contribution-calendar";
+import NumberTicker from "@/components/ui/number-ticker";
 
 interface Contributor {
   id: number;
@@ -167,7 +168,9 @@ export default function Page() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-3">
-                  <div className="text-lg md:text-2xl font-bold">187</div>
+                  <div className="text-lg md:text-2xl font-bold">
+                    <NumberTicker value={187} />
+                  </div>
                 </CardContent>
               </Card>
               <Card>
@@ -177,7 +180,9 @@ export default function Page() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-3">
-                  <div className="text-lg md:text-2xl font-bold">12 days</div>
+                  <div className="text-lg md:text-2xl font-bold">
+                    <NumberTicker value={12} /> days
+                  </div>
                 </CardContent>
               </Card>
               <Card className="col-span-2 lg:col-span-1">
@@ -187,7 +192,9 @@ export default function Page() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-3">
-                  <div className="text-lg md:text-2xl font-bold">#42</div>
+                  <div className="text-lg md:text-2xl font-bold">
+                    #<NumberTicker value={42} />
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -246,8 +253,8 @@ export default function Page() {
                       <div className="font-semibold text-sm md:text-base truncate">
                         {contributor.name}
                       </div>
-                      <div className="text-xs md:text-sm text-gray-500 text-ellipsis line-clamp-1">
-                        {contributor.contributions} contributions
+                      <div className="text-xs md:text-sm text-gray-500 line-clamp-1 overflow-ellipsis truncate">
+                        {contributor.contributions} activities
                       </div>
                     </div>
                   </div>
