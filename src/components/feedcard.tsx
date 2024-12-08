@@ -12,6 +12,11 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
+import { useClerk } from "@clerk/nextjs";
+import {
+  updateUserRecomandationScoreOnLike,
+  updateUserRecomandationScoreOnPost,
+} from "~/lib/helpers/updateRecommandationScore";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { createAvatar } from "@dicebear/core";
 import { notionistsNeutral } from "@dicebear/collection";
@@ -54,6 +59,7 @@ export default function FeedCard({
   requiredPeople,
   mediaUrl,
 }: FeedCardProps) {
+  const { user } = useClerk();
   const [isExpanded, setIsExpanded] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -66,6 +72,18 @@ export default function FeedCard({
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const isOverflowing = useIsOverflowing(descriptionRef, 3);
 
+  const categoryMap = {
+    food_support: 0,
+    medical_aid: 1,
+    education: 2,
+    housing_support: 3,
+    emotional_support: 4,
+    elderly_care: 5,
+    child_care: 6,
+    disaster_relief: 7,
+    job_training: 8,
+    environmental_protection: 9,
+  };
   const [avatar, setAvatar] = useState<string>("");
 
   useEffect(() => {
@@ -205,7 +223,14 @@ export default function FeedCard({
             className={`flex items-center justify-center text-muted-foreground hover:text-accent hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md ${
               liked ? "text-blue-500" : ""
             }`}
-            onClick={() => {
+            onClick={async () => {
+              const postScore = 0;
+              type Category = keyof typeof categoryMap;
+              console.error(category, categoryMap[category as Category]);
+              await updateUserRecomandationScoreOnLike(
+                user?.id as string,
+                categoryMap[category as Category]
+              );
               setLikesCount(liked ? likesCount - 1 : likesCount + 1);
               setLiked(!liked);
             }}
@@ -216,7 +241,12 @@ export default function FeedCard({
             className={`flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/5 py-3 rounded-md ${
               offered ? "text-red-600" : ""
             }`}
-            onClick={() => {
+            onClick={async () => {
+              type Category = keyof typeof categoryMap;
+              await updateUserRecomandationScoreOnPost(
+                user?.id as string,
+                categoryMap[category as Category]
+              );
               setVolunteersCount(
                 offered ? volunteersCount - 1 : volunteersCount + 1
               );

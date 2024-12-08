@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { ExpandableMap } from "~/components/expandable-map"
+import { ExpandableMap } from "~/components/expandable-map";
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/navbar";
@@ -9,60 +9,67 @@ import { CreatePost } from "~/components/create-a-post";
 import ProfileSidebar from "~/components/profile-sidebar";
 import DiscoverVolunteers from "~/components/discover-volunteers";
 import { getPosts } from "~/lib/api";
+import { useClerk } from "@clerk/nextjs";
+import { updateUserRecomandationScoreOnScroll } from "~/lib/helpers/updateRecommandationScore";
 import { ThemeSwitcher } from "~/components/theme-switcher";
 
 export default function Component() {
-  const observerRef = useRef<IntersectionObserver | null>(null)
-  const lastPostRef = useRef<HTMLDivElement | null>(null)
-
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const lastPostRef = useRef<HTMLDivElement | null>(null);
+  const { user } = useClerk();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery<FeedCardProps[], Error>({
       queryKey: ["posts"],
       initialPageParam: 0,
       queryFn: async ({ pageParam }) => {
-        const posts = await getPosts(pageParam as number)
+        const posts = await getPosts(pageParam as number);
         return posts.map((post) => ({
           ...post,
           id: post.id.toString(),
           registrationStart: post.registrationStart.toISOString(),
           registrationEnd: post.registrationEnd.toISOString(),
           requiredPeople: post.requiredPeople ?? undefined,
-        }))
+        }));
       },
       getNextPageParam: (lastPage, allPages) =>
         lastPage.length === 5 ? allPages.length : undefined,
-    })
+    });
 
   useEffect(() => {
+    async function callUpdateRecommandationScore() {
+      await updateUserRecomandationScoreOnScroll(user?.id as string);
+    }
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0]
+      async (entries) => {
+        const entry = entries[0];
         if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage()
+          await callUpdateRecommandationScore();
+          fetchNextPage();
         }
       },
       { threshold: 1.0 }
-    )
+    );
 
-    observerRef.current = observer
+    observerRef.current = observer;
 
-    return () => observer.disconnect()
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   useEffect(() => {
-    const observer = observerRef.current
-    const lastPost = lastPostRef.current
+    const observer = observerRef.current;
+    const lastPost = lastPostRef.current;
 
     if (lastPost && observer) {
-      observer.observe(lastPost)
+      observer.observe(lastPost);
     }
 
     return () => {
       if (lastPost && observer) {
-        observer.unobserve(lastPost)
+        observer.unobserve(lastPost);
       }
-    }
-  }, [data])
+    };
+  }, [data]);
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center gap-2 relative">
@@ -107,6 +114,5 @@ export default function Component() {
 
       <ExpandableMap apiKey="AIzaSyDZzn4QXRdUAVXnRxfXXroa4E2ThsONiJM" />
     </div>
-  )
+  );
 }
-
