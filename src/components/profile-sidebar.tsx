@@ -9,9 +9,7 @@ import { useClerk } from "@clerk/nextjs";
 import NextImage from "next/image";
 
 import month3badge from "../../public/icons8-discord-bug-hunter-badge.svg";
-
 import firstJob from "../../public/boost6month.svg";
-
 import verified from "../../public/icons8-discord-hypesquad-events-badge.svg";
 
 export default function ProfileSidebar() {
@@ -30,32 +28,33 @@ export default function ProfileSidebar() {
               </Avatar>
             </div>
           </div>
-          <div className="p-4 pt-8">
+          <div className="px-4 pt-8 pb-2">
             <h2 className="text-xl font-semibold">{user?.fullName}</h2>
             <p className="text-sm text-muted-foreground">Volunteer</p>
             <p className="text-sm text-muted-foreground">Bucharest, RO</p>
           </div>
-          <div className="badges-holder w-[100%] h-[70px]  flex flex-row gap-0 justify-evenly">
+
+          <div className="badges-holder h-16 flex flex-row gap-0 justify-between p-4">
             <NextImage
-              className="w-[20%] h-full object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
+              className="object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
               src={firstJob}
               alt="First Job Completed"
-              width={100}
-              height={100}
+              width={64}
+              height={64}
             />
             <NextImage
-              className="w-[20%] h-full object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
+              className="object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
               src={verified}
               alt="Verified User"
-              width={100}
-              height={100}
+              width={64}
+              height={64}
             />
             <NextImage
-              className="w-[20%] h-full object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
+              className="object-contain transform scale-75 transition-transform duration-300 hover:scale-100"
               src={month3badge}
               alt="3 Mounth of Activity"
-              width={100}
-              height={100}
+              width={64}
+              height={64}
             />
           </div>
         </CardContent>

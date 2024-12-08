@@ -2,7 +2,11 @@
 
 import { db } from "~/lib/db";
 import { posts, users } from "~/lib/schema";
-import { desc, sql, eq } from "drizzle-orm";
+import { desc, sql, eq, notInArray } from "drizzle-orm";
+
+interface categoryMapI {
+  [key: string]: number;
+}
 
 export async function getPosts(
   page: number,
@@ -32,14 +36,29 @@ export async function getPosts(
     .where(eq(users.id, userId))
     .then((rows) => rows[0]?.recommand_score || 0);
 
-  const fetchedPosts = await db
+    const fetchedPosts = await db
     .select()
     .from(posts)
-    .where(sql`${posts.id} NOT IN (${sql.join(excludedPostIds)})`) // Exclude posts by IDs
+    .where(
+      // Use notInArray for excluding posts
+      excludedPostIds.length > 0 ? notInArray(posts.id, excludedPostIds) : undefined
+    ) // Exclude posts by IDs
     .orderBy(
-      sql`ABS(${currentRecomandationScore} - ${
-        categoryMap[posts.category as unknown as Category]
-      })`
+      sql`ABS(${currentRecomandationScore} - 
+        CASE 
+          WHEN ${posts.category} = 'food_support' THEN 1
+          WHEN ${posts.category} = 'medical_aid' THEN 2
+          WHEN ${posts.category} = 'education' THEN 3
+          WHEN ${posts.category} = 'housing_support' THEN 4
+          WHEN ${posts.category} = 'emotional_support' THEN 5
+          WHEN ${posts.category} = 'elderly_care' THEN 6
+          WHEN ${posts.category} = 'child_care' THEN 7
+          WHEN ${posts.category} = 'disaster_relief' THEN 8
+          WHEN ${posts.category} = 'job_training' THEN 9
+          WHEN ${posts.category} = 'environmental_protection' THEN 10
+          ELSE 0
+        END
+      )`
     ) // Order by absolute difference
     .limit(pageSize)
     .offset(offset);
