@@ -85,7 +85,7 @@ export default function Component() {
       <div className="mt-12" />
       {/* <ThemeSwitcher /> */}
 
-      <div className="grid grid-cols-3 gap-8 p-8 place-content-center">
+      <div className="grid grid-cols-3 gap-8 p-8 place-content-center max-w-7xl">
         <div className="hidden sm:flex place-content-end">
           <ProfileSidebar />
         </div>
